@@ -1,0 +1,22 @@
+{
+  "name": "BeSafe_Backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon ./src/index.js"
+  },
+  "repository": "https://github.com/Mehul2410/BeSafe_Backend.git",
+  "author": "Mehul2410 <mehulgawhale18hc@student.mes.ac.in>",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
+    "fastify": "^3.22.0",
+    "fastify-cookie": "^5.3.1",
+    "fastify-static": "^4.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.1.3"
+  }
+}
