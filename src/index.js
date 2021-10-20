@@ -33,7 +33,7 @@ app.get("/test", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("hello world");
+  res.json({ success: true, message: "Welcome to backend" });
 });
 
 app.listen(8000, () => {
