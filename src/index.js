@@ -7,7 +7,7 @@ const userRouter = require("./routes/user");
 
 //code
 const app = express();
-
+const port = process.env.PORT || 8000;
 // app.use((req, res, next) => {
 //   req.on("data", (chunk) => {
 //     const data = JSON.parse(chunk);
@@ -36,6 +36,6 @@ app.get("/", (req, res) => {
   res.json({ success: true, message: "Welcome to backend" });
 });
 
-app.listen(8000, () => {
+app.listen(port, () => {
   console.log("port is listening");
 });
