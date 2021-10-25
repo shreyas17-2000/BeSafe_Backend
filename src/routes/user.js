@@ -1,5 +1,9 @@
 const express = require("express");
-const { createUser, userSignIn } = require("../controllers/user");
+const {
+  createUser,
+  userSignIn,
+  uploadProfile,
+} = require("../controllers/user");
 const { isAuth } = require("../middleware/auth");
 const {
   userValidation,
@@ -10,7 +14,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const User = require("../models/user");
 
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({});
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
@@ -34,31 +38,9 @@ router.post(
   "/upload-profile",
   isAuth,
   uploads.single("profile"),
-  async (req, res) => {
-    const { user } = req;
-    if (!user)
-      return res
-        .status(401)
-        .json({ sucess: false, message: "unauthorized access" });
-
-    try {
-      const profileBuffer = req.file.buffer;
-      const { width, height } = await sharp(profileBuffer).metadata();
-      const avatar = await sharp(profileBuffer)
-        .resize(Math.round(width * 0.5), Math.round(height * 0.5))
-        .toBuffer();
-
-      await User.findByIdAndUpdate(user._id, { avatar });
-      res
-        .status(201)
-        .json({ success: true, message: "Your profile has updated" });
-    } catch (error) {
-      res
-        .statusCode(500)
-        .json({ success: false, message: "Server error try after some time" });
-      console.log("error while uploading profile image", error.message);
-    }
-  }
+  uploadProfile
 );
+
+router.post("/sign-out", isAuth, signOut);
 
 module.exports = router;
