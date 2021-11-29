@@ -3,6 +3,7 @@ const {
   createUser,
   userSignIn,
   uploadProfile,
+  signOut,
 } = require("../controllers/user");
 const { isAuth } = require("../middleware/auth");
 const {
@@ -11,8 +12,6 @@ const {
 } = require("../middleware/validation/user");
 const { validateUserSignUp } = require("../middleware/validation/user");
 const multer = require("multer");
-const sharp = require("sharp");
-const User = require("../models/user");
 
 const storage = multer.diskStorage({});
 
