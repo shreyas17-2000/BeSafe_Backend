@@ -1,6 +1,5 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const sharp = require("sharp");
 const cloudinary = require("../helper/imageUpload");
 
 exports.createUser = async (req, res) => {
