@@ -15,6 +15,10 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    default: "citizen",
+  },
   avatar: String,
   // tokens: [{ type: Object }],
 });

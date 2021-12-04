@@ -1,9 +1,10 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const sharp = require("sharp");
 const cloudinary = require("../helper/imageUpload");
 
 exports.createUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   const isNewuser = await User.isThisEmailInUse(email);
   if (!isNewuser)
     return res.json({
@@ -14,6 +15,8 @@ exports.createUser = async (req, res) => {
     name,
     email,
     password,
+    role,
+    authorized: false,
   });
   await user.save();
   res.json({ success: true, user });
