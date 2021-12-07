@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const AdminDb = require("../models/admin");
 const sharp = require("sharp");
 const cloudinary = require("../helper/imageUpload");
 
@@ -44,6 +45,37 @@ exports.userSignIn = async (req, res) => {
   });
 
   res.json({ success: true, user, token });
+};
+
+exports.AdminSignIn = async (req, res) => {
+  const { email, password } = req.body;
+  // const admin = await AdminDb({
+  //   email,
+  //   password,
+  // });
+  // await admin.save();
+  // res.json({ admin });
+  const admin = await AdminDb.findOne({ email });
+
+  if (!admin)
+    return res.json({
+      success: false,
+      message: "admin not found with the given email",
+    });
+
+  const isMatch = await admin.comparePassword(password);
+  if (!isMatch)
+    return res.json({
+      success: false,
+      message: "email / password does not match!",
+    });
+
+  const token = jwt.sign({ adminId: admin._id }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
+  res.cookie("adminLogin", token, { maxAge: 900000, httpOnly: true });
+  res.json({ success: true, admin, token });
+  res.end();
 };
 
 exports.uploadProfile = async (req, res) => {

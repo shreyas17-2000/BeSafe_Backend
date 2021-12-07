@@ -4,6 +4,7 @@ const {
   userSignIn,
   uploadProfile,
   signOut,
+  AdminSignIn,
 } = require("../controllers/user");
 const { isAuth } = require("../middleware/auth");
 const {
@@ -29,6 +30,7 @@ const router = express.Router();
 
 router.post("/create-user", validateUserSignUp, userValidation, createUser);
 router.post("/sign-in", validateUserSignIn, userValidation, userSignIn);
+router.post("/admin-sign-in", validateUserSignIn, userValidation, AdminSignIn);
 router.post("/create-post", isAuth, (req, res) => {
   //create our post
   res.send("welcome you are in secret route");
