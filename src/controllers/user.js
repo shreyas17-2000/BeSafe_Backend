@@ -74,8 +74,7 @@ exports.AdminSignIn = async (req, res) => {
     expiresIn: "1d",
   });
   res.cookie("adminLogin", token, { maxAge: 900000, httpOnly: true });
-  res.json({ success: true, admin, token });
-  res.end();
+  res.json({ success: true });
 };
 
 exports.uploadProfile = async (req, res) => {
