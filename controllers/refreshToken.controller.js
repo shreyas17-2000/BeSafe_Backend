@@ -60,6 +60,7 @@ const refreshTokenController = {
           refreshToken: refresh_token,
         }
       );
+      console.log(x);
       res.json({
         success: true,
         access_token,

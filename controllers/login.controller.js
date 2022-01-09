@@ -64,9 +64,12 @@ const loginController = {
           refresh_token,
         });
       }
-      await RefreshToken.findOneAndUpdate(user._id, {
-        refreshToken: refresh_token,
-      });
+      await RefreshToken.findOneAndUpdate(
+        { userid: user._id },
+        {
+          refreshToken: refresh_token,
+        }
+      );
       return res.json({
         success: true,
         access_token,
