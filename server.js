@@ -34,6 +34,8 @@ app.use("/api", router);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+const port = PORT || "5000";
+
+app.listen(port, () => {
   console.log(`listening on port ${PORT}`);
 });
