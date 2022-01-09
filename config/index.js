@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const {
-  APP_PORT,
+  PORT,
   DEBUG_MODE,
   DBURL,
   JWT_SECRET,
@@ -14,7 +14,7 @@ const {
 } = process.env;
 
 module.exports = {
-  APP_PORT,
+  PORT,
   DEBUG_MODE,
   DBURL,
   JWT_SECRET,

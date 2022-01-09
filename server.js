@@ -1,6 +1,6 @@
 const cors = require("cors");
 const express = require("express");
-const { APP_PORT, DBURL } = require("./config");
+const { PORT, DBURL } = require("./config");
 const errorHandler = require("./middleware/errorHandler");
 const router = require("./routes");
 
@@ -34,6 +34,6 @@ app.use("/api", router);
 
 app.use(errorHandler);
 
-app.listen(APP_PORT, () => {
-  console.log(`listening on port ${APP_PORT}`);
+app.listen(PORT, () => {
+  console.log(`listening on port ${PORT}`);
 });
