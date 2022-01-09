@@ -37,5 +37,5 @@ app.use(errorHandler);
 const port = PORT || "5000";
 
 app.listen(port, () => {
-  console.log(`listening on port ${PORT}`);
+  console.log(`listening on port ${port}`);
 });
