@@ -55,12 +55,13 @@ const refreshTokenController = {
       // database whitelist
 
       const x = await RefreshToken.findOneAndUpdate(
-        { userId: user._id },
+        { userid: user._id },
         {
           refreshToken: refresh_token,
         }
       );
       res.json({
+        success: true,
         access_token,
         refresh_token,
       });
