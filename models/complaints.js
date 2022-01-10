@@ -40,7 +40,7 @@ const complaintSchema = new Schema({
       assignTo: {
         type: String,
       },
-      time: { type: Date, default: Date.now },
+      time: { type: Date, default: Date.now() },
     },
   },
 });
