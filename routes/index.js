@@ -56,7 +56,7 @@ router.get("/complaints", auth, stationAdmin, getComplaints);
 
 async function stationAdmin(req, res, next) {
   const { _id, role } = req.user;
-  if (role === 3000) {
+  if (role === 4000) {
     const stationadmin = await User.findById(_id);
     req.station = stationadmin.userDetails.stationLocation;
     next();
