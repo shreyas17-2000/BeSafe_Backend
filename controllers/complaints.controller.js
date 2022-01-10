@@ -19,7 +19,7 @@ const complaintsController = {
           myComplaints,
         });
       }
-      if (role === 3000) {
+      if (role === 4000) {
         myComplaints = await Complaint.find(
           {
             complaints: { $elemMatch: { location: { name: req.station } } },
