@@ -2,50 +2,48 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const complaintSchema = new Schema(
-  {
-    userId: {
-      type: String,
+const complaintSchema = new Schema({
+  userId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  complaints: {
+    type: Array,
+    default: [],
+    complaint: {
+      type: Object,
       required: true,
       unique: true,
-    },
-    complaints: {
-      type: Array,
-      default: [],
-      complaint: {
-        type: Object,
+      reason: {
+        type: String,
         required: true,
-        unique: true,
-        reason: {
+      },
+      complaintType: {
+        type: String,
+        required: true,
+      },
+      location: {
+        name: {
           type: String,
           required: true,
-        },
-        complaintType: {
-          type: String,
-          required: true,
-        },
-        location: {
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-        proof: {
-          type: String,
-          required: true,
-        },
-        status: {
-          type: String,
-          default: "In Queue",
-        },
-        assignTo: {
-          type: String,
         },
       },
+      proof: {
+        type: String,
+        required: true,
+      },
+      status: {
+        type: String,
+        default: "In Queue",
+      },
+      assignTo: {
+        type: String,
+      },
+      time: { type: Date, default: Date.now },
     },
   },
-  { timestamps: true }
-);
+});
 
 module.exports = mongoose.model("Complaint", complaintSchema, "complaints");
 // 1st:ourname
