@@ -80,11 +80,16 @@ const complaintsController = {
           result,
         });
       }
-      addComplaint = await Complaint.findOneAndUpdate(_id, {
-        $push: {
-          complaints: newComplaint,
+      addComplaint = await Complaint.findOneAndUpdate(
+        {
+          userId: _id,
         },
-      });
+        {
+          $push: {
+            complaints: newComplaint,
+          },
+        }
+      );
     } catch (err) {
       return next(err);
     }
