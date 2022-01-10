@@ -12,8 +12,6 @@ const complaintSchema = new Schema({
     {
       type: new Schema(
         {
-          required: true,
-          unique: true,
           reason: {
             type: String,
             required: true,
@@ -42,6 +40,8 @@ const complaintSchema = new Schema({
         },
         { timestamps: true }
       ),
+      required: true,
+      unique: true,
     },
   ],
 });
