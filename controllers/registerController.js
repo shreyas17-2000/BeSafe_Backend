@@ -47,13 +47,24 @@ const registerController = {
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
     // prepare model
-
-    const user = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role,
-    });
+    let user;
+    if (role === 3000) {
+      user = new User({
+        name,
+        email,
+        password: hashedPassword,
+        role,
+        active: true,
+      });
+    } else {
+      user = new User({
+        name,
+        email,
+        password: hashedPassword,
+        role,
+        active: false,
+      });
+    }
     const result = await user.save();
     let access_token;
     let refresh_token;
@@ -74,9 +85,10 @@ const registerController = {
       next(err);
     }
     res.json({
-      sucess: true,
+      success: true,
       access_token,
       refresh_token,
+      result,
     });
   },
 };

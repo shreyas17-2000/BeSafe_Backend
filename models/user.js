@@ -1,3 +1,4 @@
+const { boolean } = require("joi");
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
@@ -26,6 +27,9 @@ const userSchema = new Schema(
     },
     userDetails: {
       type: Object,
+    },
+    active: {
+      type: boolean,
     },
   },
   { timestamps: true }
