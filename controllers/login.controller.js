@@ -72,6 +72,7 @@ const loginController = {
         success: true,
         access_token,
         refresh_token,
+        result: user,
       });
     } catch (err) {
       return next(err);
