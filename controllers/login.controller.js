@@ -13,7 +13,9 @@ const loginController = {
       email: Joi.string().email().required(),
       password: Joi.string()
         .pattern(
-          new RegExp("/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/")
+          new RegExp(
+            "/^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$/"
+          )
         )
         .required(),
       role: Joi.number().required(),
