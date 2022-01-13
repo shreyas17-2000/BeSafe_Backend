@@ -48,12 +48,10 @@ const userDetailController = {
         ),
         panCard: Joi.string().pattern(new RegExp("[A-Z]{5}[0-9]{4}[A-Z]{1}")),
         policeId: Joi.string().min(3).max(30),
-        postingArea: Joi.object({
-          lat: Joi.number(),
-          long: Joi.number(),
-        }),
+        postingArea: Joi.string(),
         stationName: Joi.string().min(3).max(30),
         policePost: Joi.string().min(3).max(30),
+        city: Joi.string(),
         dob: Joi.date(),
         address: Joi.string().min(3).max(300),
       });
