@@ -9,6 +9,9 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    active: {
+      type: Boolean,
+    },
     avatar: {
       type: String,
     },
@@ -27,9 +30,6 @@ const userSchema = new Schema(
     },
     userDetails: {
       type: Object,
-    },
-    active: {
-      type: boolean,
     },
   },
   { timestamps: true }

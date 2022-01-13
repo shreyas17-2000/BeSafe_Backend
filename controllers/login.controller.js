@@ -12,7 +12,9 @@ const loginController = {
     const loginSchema = Joi.object({
       email: Joi.string().email().required(),
       password: Joi.string()
-        .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+        .pattern(
+          new RegExp("/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/")
+        )
         .required(),
       role: Joi.number().required(),
     });
