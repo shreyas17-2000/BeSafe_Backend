@@ -11,9 +11,7 @@ const loginController = {
     // validation
     const loginSchema = Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string()
-        .pattern(new RegExp("/^(?=.*[A-Z])(?=.*[a-z])(?=.*d).*$/"))
-        .required(),
+      password: Joi.string().required(),
       role: Joi.number().required(),
     });
     const { error } = loginSchema.validate(req.body);
