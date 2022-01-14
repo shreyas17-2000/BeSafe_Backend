@@ -64,13 +64,13 @@ const userDetailController = {
       //
       const data = {
         ...req.body,
-        verificationPaper: req.verificationPaper,
+        verificationPaper: req.url,
       };
       const updateDetails = await User.findOneAndUpdate(
         { _id: _id },
         {
           $set: {
-            userDetails: req.body,
+            userDetails: data,
           },
         }
       );
