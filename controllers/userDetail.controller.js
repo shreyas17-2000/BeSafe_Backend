@@ -43,18 +43,19 @@ const userDetailController = {
     console.log(req.body);
     if (role === 5000) {
       const policeInfoSchema = Joi.object({
-        adhaarCard: Joi.string().pattern(
-          new RegExp("^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$")
-        ),
-        panCard: Joi.string().pattern(new RegExp("[A-Z]{5}[0-9]{4}[A-Z]{1}")),
-        policeID: Joi.string().min(3).max(30),
-        stationName: Joi.string().min(3).max(30),
-        postingArea: Joi.string(),
-        policePost: Joi.string().min(3).max(30),
-        city: Joi.string(),
-        dob: Joi.date(),
-        address: Joi.string().min(3).max(500),
-        postingAreaAddress: Joi.string().min(10).max(500),
+        adhaarCard: Joi.string()
+          .pattern(new RegExp("^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$"))
+          .required(),
+        panCard: Joi.string()
+          .pattern(new RegExp("[A-Z]{5}[0-9]{4}[A-Z]{1}"))
+          .required(),
+        policeID: Joi.string().min(3).max(30).required(),
+        postingArea: Joi.string().required(),
+        policePost: Joi.string().min(3).max(30).required(),
+        city: Joi.string().required(),
+        dob: Joi.date().required(),
+        address: Joi.string().min(3).max(500).required(),
+        postingAreaAddress: Joi.string().min(10).max(500).required(),
       });
       const { error } = policeInfoSchema.validate(req.body);
       if (error) {
