@@ -56,6 +56,7 @@ const userDetailController = {
         dob: Joi.date().required(),
         address: Joi.string().min(3).max(500).required(),
         postingAreaAddress: Joi.string().min(10).max(500).required(),
+        verificationPaper: Joi.string().required(),
       });
       const { error } = policeInfoSchema.validate(req.body);
       if (error) {

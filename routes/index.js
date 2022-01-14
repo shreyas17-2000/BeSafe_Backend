@@ -14,6 +14,7 @@ const {
   policeDetails,
   uploadProfile,
 } = require("../controllers/userDetail.controller");
+const cloudinary = require("../services/imageUpload");
 const auth = require("../middleware/auth.middleware");
 const multer = require("multer");
 
@@ -38,6 +39,12 @@ router.post("/refresh", refresh);
 router.post("/logout", auth, logout);
 router.post("/complaints", auth, postComplaints);
 router.post("/upload-profile", auth, uploads.single("profile"), uploadProfile);
+router.post(
+  "/upload-verification",
+  auth,
+  uploads.single("verification"),
+  uploadVerification
+);
 
 // router.post("/policeAdminAssignTo", auth, PoliceAdminAssignTo);
 
@@ -45,13 +52,7 @@ router.post("/upload-profile", auth, uploads.single("profile"), uploadProfile);
 router.put("/citizenDetails", auth, citizenDetails);
 
 // police details
-router.put(
-  "/policeDetails",
-  auth,
-  uploads.single("verification"),
-  uploadVerification,
-  policeDetails
-);
+router.put("/policeDetails", auth, policeDetails);
 
 async function uploadVerification(req, res, next) {
   const { _id, role } = req.user;
@@ -59,8 +60,7 @@ async function uploadVerification(req, res, next) {
     const result = await cloudinary.uploader.upload(req.file.path, {
       public_id: `${_id}_verificationPaper`,
     });
-    req.url = result.url;
-    next();
+    res.json({ success: true, uri: result.url });
   } catch (error) {
     next(CustomErrorHandler.serverError());
   }
