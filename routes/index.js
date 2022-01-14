@@ -45,8 +45,26 @@ router.post("/upload-profile", auth, uploads.single("profile"), uploadProfile);
 router.put("/citizenDetails", auth, citizenDetails);
 
 // police details
-router.put("/policeDetails", auth, policeDetails);
+router.put(
+  "/policeDetails",
+  auth,
+  uploads.single("verification"),
+  uploadVerification,
+  policeDetails
+);
 
+async function uploadVerification(req, res, next) {
+  const { _id, role } = req.user;
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      public_id: `${_id}_verificationPaper`,
+    });
+    req.url = result.url;
+    next();
+  } catch (error) {
+    next(CustomErrorHandler.serverError());
+  }
+}
 // assign complaint
 // router.put("/assignComplaint", auth,stationAdmin, );
 

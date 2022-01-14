@@ -62,6 +62,10 @@ const userDetailController = {
         return next(error);
       }
       //
+      const data = {
+        ...req.body,
+        verificationPaper: req.verificationPaper,
+      };
       const updateDetails = await User.findOneAndUpdate(
         { _id: _id },
         {
