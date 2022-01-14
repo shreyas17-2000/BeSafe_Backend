@@ -53,7 +53,7 @@ const userDetailController = {
         postingArea: Joi.string().required(),
         policePost: Joi.string().min(3).max(30).required(),
         city: Joi.string().required(),
-        dob: Joi.date().required(),
+        dob: Joi.string().required(),
         address: Joi.string().min(3).max(500).required(),
         postingAreaAddress: Joi.string().min(10).max(500).required(),
         verificationPaper: Joi.string().required(),
