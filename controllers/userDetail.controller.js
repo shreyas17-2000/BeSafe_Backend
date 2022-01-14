@@ -63,15 +63,11 @@ const userDetailController = {
         return next(error);
       }
       //
-      const data = {
-        ...req.body,
-        verificationPaper: req.url,
-      };
       const updateDetails = await User.findOneAndUpdate(
         { _id: _id },
         {
           $set: {
-            userDetails: data,
+            userDetails: req.body,
           },
         }
       );
