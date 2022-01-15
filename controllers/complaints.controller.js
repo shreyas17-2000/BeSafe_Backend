@@ -46,24 +46,20 @@ const complaintsController = {
   async postComplaints(req, res, next) {
     const { _id, role } = req.user;
     const complaintSchema = Joi.object({
+      complaintAgaints: Joi.string().max(3).max(250).required(),
       reason: Joi.string().min(3).max(250).required(),
       complaintType: Joi.string().min(3).max(250).required(),
-      location: Joi.object({
-        name: Joi.string().required(),
-      }),
-      proof: Joi.string().min(3).required(),
+      locationName: Joi.string(),
+      locationAddress: Joi.string(),
+      currentSituation: Joi.string(),
+      nearestPoliceStation: Joi.string(),
+      nearestPoliceStationAddress: Joi.string(),
+      images: Joi.array().items(Joi.string()),
     });
     const { error } = complaintSchema.validate(req.body);
     if (error) {
       return next(error);
     }
-    const { reason, complaintType, location, proof } = req.body;
-    const newComplaint = {
-      reason,
-      complaintType,
-      location,
-      proof,
-    };
     let complaints;
     let addComplaint;
     try {
@@ -73,7 +69,7 @@ const complaintsController = {
       if (!complaints) {
         const complaint = await new Complaint({
           userId: _id,
-          complaints: newComplaint,
+          complaints: req.body,
         });
         const result = await complaint.save();
         return res.json({
@@ -86,7 +82,7 @@ const complaintsController = {
         },
         {
           $push: {
-            complaints: newComplaint,
+            complaints: req.body,
           },
         }
       );
