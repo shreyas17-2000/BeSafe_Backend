@@ -133,11 +133,11 @@ const loginController = {
         }
       );
       res.cookie("access_token", access_token, {
-        maxAge: 900000,
+        maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
       });
       res.cookie("refresh_token", refresh_token, {
-        maxAge: 900000,
+        maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
       });
       res.json({
