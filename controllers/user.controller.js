@@ -16,6 +16,20 @@ const userController = {
       return next(err);
     }
   },
+  async allUsers(req, res, next) {
+    try {
+      const user = await User.find().select(
+        "-password -updatedAt -__v -email -active -role -userDetails -createdAt -updatedAt"
+      );
+      if (!user) {
+        return next(CustomErrorHandler.notFound());
+      }
+      res.json(user);
+      console.log(user);
+    } catch (err) {
+      return next(err);
+    }
+  },
 };
 
 module.exports = userController;

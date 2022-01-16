@@ -8,7 +8,7 @@ const { login } = require("../controllers/login.controller");
 const { logout } = require("../controllers/logout.controller");
 const { refresh } = require("../controllers/refreshToken.controller");
 const { register } = require("../controllers/registerController");
-const { me } = require("../controllers/user.controller");
+const { me, allUsers } = require("../controllers/user.controller");
 const {
   citizenDetails,
   policeDetails,
@@ -105,6 +105,7 @@ async function uploadVerification(req, res, next) {
 
 // get
 router.get("/mydetails", auth, me);
+router.get("/allusers", auth, allUsers);
 router.get("/complaints", auth, stationAdmin, getComplaints);
 
 async function stationAdmin(req, res, next) {
