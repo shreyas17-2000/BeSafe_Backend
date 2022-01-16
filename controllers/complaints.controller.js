@@ -47,7 +47,7 @@ const complaintsController = {
     const Data = JSON.parse(req.body.data);
     const { _id, role } = req.user;
     const complaintSchema = Joi.object({
-      complaintAgaints: Joi.string().max(3).max(250).required(),
+      complaintAgainst: Joi.string().max(3).max(250).required(),
       reason: Joi.string().min(3).max(250).required(),
       complaintType: Joi.string().min(3).max(250).required(),
       locationName: Joi.string().required(),

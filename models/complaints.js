@@ -12,7 +12,7 @@ const complaintSchema = new Schema({
     {
       type: new Schema(
         {
-          complaintAgaints: {
+          complaintAgainst: {
             type: String,
             required: true,
           },
