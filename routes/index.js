@@ -64,13 +64,6 @@ router.put("/citizenDetails", auth, citizenDetails);
 // police details
 router.put("/policeDetails", auth, policeDetails);
 
-router.post(
-  "/complaintImages",
-  auth,
-  uploads.array("imageProof"),
-  uploadComplaintProof
-);
-
 async function uploadComplaintProof(req, res, next) {
   const { _id, role } = req.user;
   try {
