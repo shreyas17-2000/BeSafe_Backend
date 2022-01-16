@@ -132,11 +132,11 @@ const loginController = {
           refreshToken: refresh_token,
         }
       );
-      res.cookie("adminLogin", access_token, {
+      res.cookie("access", access_token, {
         maxAge: 900000,
         httpOnly: true,
       });
-      res.cookie("adminLogin", refresh_token, {
+      res.cookie("refresh", refresh_token, {
         maxAge: 900000,
         httpOnly: true,
       });
