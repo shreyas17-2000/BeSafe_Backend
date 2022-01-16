@@ -142,8 +142,8 @@ const loginController = {
       });
       res.json({
         success: true,
-        access_token,
-        refresh_token,
+        // access_token,
+        // refresh_token,
       });
     } catch (err) {
       return next(err);

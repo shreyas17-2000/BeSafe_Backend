@@ -42,7 +42,9 @@ const router = express.Router();
 // post
 router.post("/register", register);
 // router.post("/registerAdmin", registerAdmin);
+
 router.post("/login", login);
+
 router.post("/admin", adminlogin);
 router.post("/refresh", refresh);
 router.post("/logout", auth, logout);
