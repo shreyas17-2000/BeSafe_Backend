@@ -1,8 +1,7 @@
 const User = require("../models/user");
 const Joi = require("joi");
 const CustomErrorHandler = require("../services/CustomErrorHandler");
-const cloudinary = require("../services/imageUpload");
-
+const { cloudinary } = require("../services/imageUpload");
 const userDetailController = {
   async citizenDetails(req, res, next) {
     const { _id, role } = req.user;
@@ -76,6 +75,7 @@ const userDetailController = {
         width: 500,
         height: 500,
         crop: "fill",
+        folder: `profile/${_id}`,
       });
       const updatedUser = await User.findByIdAndUpdate(
         _id,

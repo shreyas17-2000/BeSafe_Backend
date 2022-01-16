@@ -12,6 +12,10 @@ const complaintSchema = new Schema({
     {
       type: new Schema(
         {
+          complaintAgaints: {
+            type: String,
+            required: true,
+          },
           reason: {
             type: String,
             required: true,
@@ -20,16 +24,31 @@ const complaintSchema = new Schema({
             type: String,
             required: true,
           },
-          location: {
-            name: {
-              type: String,
-              required: true,
-            },
-          },
-          proof: {
+          locationName: {
             type: String,
             required: true,
           },
+          locationAddress: {
+            type: String,
+            required: true,
+          },
+          currentSituation: {
+            type: String,
+            required: true,
+          },
+          nearestPoliceStation: {
+            type: String,
+            required: true,
+          },
+          nearestPoliceStationAddress: {
+            type: String,
+            required: true,
+          },
+          images: [
+            {
+              type: String,
+            },
+          ],
           status: {
             type: String,
             default: "In Queue",

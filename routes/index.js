@@ -14,9 +14,13 @@ const {
   policeDetails,
   uploadProfile,
 } = require("../controllers/userDetail.controller");
-const cloudinary = require("../services/imageUpload");
+const {
+  cloudinary,
+  cloudinaryImageUploadMethod,
+} = require("../services/imageUpload");
 const auth = require("../middleware/auth.middleware");
 const multer = require("multer");
+const CustomErrorHandler = require("../services/CustomErrorHandler");
 
 const storage = multer.diskStorage({});
 
@@ -24,7 +28,7 @@ const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
-    cb("invalid image file!", false);
+    next(CustomErrorHandler.wrongCredentials("invalid image file!"));
   }
 };
 
@@ -37,7 +41,13 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/refresh", refresh);
 router.post("/logout", auth, logout);
-router.post("/complaints", auth, postComplaints);
+router.post(
+  "/complaints",
+  auth,
+  uploads.array("imageProof"),
+  uploadComplaintProof,
+  postComplaints
+);
 router.post("/upload-profile", auth, uploads.single("profile"), uploadProfile);
 router.post(
   "/upload-verification",
@@ -54,11 +64,36 @@ router.put("/citizenDetails", auth, citizenDetails);
 // police details
 router.put("/policeDetails", auth, policeDetails);
 
+router.post(
+  "/complaintImages",
+  auth,
+  uploads.array("imageProof"),
+  uploadComplaintProof
+);
+
+async function uploadComplaintProof(req, res, next) {
+  const { _id, role } = req.user;
+  try {
+    const urls = [];
+    const files = req.files;
+    // const { _id, role } = req.user;
+    for (const file of files) {
+      const { path } = file;
+      const { res } = await cloudinaryImageUploadMethod(path, _id);
+      urls.push(res);
+    }
+    req.urls = urls;
+    next();
+  } catch (error) {
+    next(CustomErrorHandler.serverError());
+  }
+}
 async function uploadVerification(req, res, next) {
   const { _id, role } = req.user;
   try {
     const result = await cloudinary.uploader.upload(req.file.path, {
       public_id: `${_id}_verificationPaper`,
+      folder: `verificationPaper/${_id}`,
     });
     res.json({ success: true, uri: result.url });
   } catch (error) {

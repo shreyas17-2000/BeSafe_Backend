@@ -11,4 +11,19 @@ cloudinary.config({
   api_secret: CLOUDINARY_API_SECRET,
 });
 
-module.exports = cloudinary;
+const cloudinaryImageUploadMethod = async (file, id) => {
+  return new Promise((resolve) => {
+    cloudinary.uploader.upload(
+      file,
+      { folder: `complaintImages/${id}` },
+      (err, res) => {
+        if (err) return res.status(500).send("upload image error");
+        resolve({
+          res: res.secure_url,
+        });
+      }
+    );
+  });
+};
+
+module.exports = { cloudinary, cloudinaryImageUploadMethod };

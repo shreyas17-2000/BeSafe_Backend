@@ -44,19 +44,19 @@ const complaintsController = {
     });
   },
   async postComplaints(req, res, next) {
+    const Data = JSON.parse(req.body.data);
     const { _id, role } = req.user;
     const complaintSchema = Joi.object({
       complaintAgaints: Joi.string().max(3).max(250).required(),
       reason: Joi.string().min(3).max(250).required(),
       complaintType: Joi.string().min(3).max(250).required(),
-      locationName: Joi.string(),
-      locationAddress: Joi.string(),
-      currentSituation: Joi.string(),
-      nearestPoliceStation: Joi.string(),
-      nearestPoliceStationAddress: Joi.string(),
-      images: Joi.array().items(Joi.string()),
+      locationName: Joi.string().required(),
+      locationAddress: Joi.string().required(),
+      currentSituation: Joi.string().required(),
+      nearestPoliceStation: Joi.string().required(),
+      nearestPoliceStationAddress: Joi.string().required(),
     });
-    const { error } = complaintSchema.validate(req.body);
+    const { error } = complaintSchema.validate(Data);
     if (error) {
       return next(error);
     }
@@ -69,7 +69,7 @@ const complaintsController = {
       if (!complaints) {
         const complaint = await new Complaint({
           userId: _id,
-          complaints: req.body,
+          complaints: { ...Data, images: req.urls },
         });
         const result = await complaint.save();
         return res.json({
@@ -82,7 +82,7 @@ const complaintsController = {
         },
         {
           $push: {
-            complaints: req.body,
+            complaints: { ...Data, images: req.urls },
           },
         }
       );
