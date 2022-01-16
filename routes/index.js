@@ -4,10 +4,13 @@ const {
   getComplaints,
   postComplaints,
 } = require("../controllers/complaints.controller");
-const { login } = require("../controllers/login.controller");
+const { login, adminlogin } = require("../controllers/login.controller");
 const { logout } = require("../controllers/logout.controller");
 const { refresh } = require("../controllers/refreshToken.controller");
-const { register } = require("../controllers/registerController");
+const {
+  register,
+  registerAdmin,
+} = require("../controllers/registerController");
 const { me, allUsers } = require("../controllers/user.controller");
 const {
   citizenDetails,
@@ -38,7 +41,9 @@ const router = express.Router();
 
 // post
 router.post("/register", register);
+// router.post("/registerAdmin", registerAdmin);
 router.post("/login", login);
+router.post("/admin", adminlogin);
 router.post("/refresh", refresh);
 router.post("/logout", auth, logout);
 router.post(
