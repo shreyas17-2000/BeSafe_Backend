@@ -3,6 +3,7 @@ const express = require("express");
 const { PORT, DBURL } = require("./config");
 const errorHandler = require("./middleware/errorHandler");
 const router = require("./routes");
+const cookieParser = require("cookie-parser");
 
 const mongoose = require("mongoose");
 
