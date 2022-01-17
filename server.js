@@ -17,6 +17,7 @@ const corsOptions = {
     "http://localhost:19002/",
     "http://192.168.0.108:19002/",
     "http://192.168.0.108:3000/",
+    "https://besafeadmin.mehulgawhale.me/",
   ],
 };
 
