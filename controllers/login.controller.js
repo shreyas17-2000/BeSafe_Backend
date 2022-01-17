@@ -135,10 +135,12 @@ const loginController = {
       res.cookie("access_token", access_token, {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
+        sameSite: "lax",
       });
       res.cookie("refresh_token", refresh_token, {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
+        sameSite: "lax",
       });
       res.json({
         success: true,
