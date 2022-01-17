@@ -12,11 +12,7 @@ const app = express();
 app.use(cookieParser());
 const corsOptions = {
   credentials: true,
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:19002/",
-    "http://192.168.0.108:19002/",
-  ],
+  origin: [],
 };
 
 mongoose.connect(DBURL, {
