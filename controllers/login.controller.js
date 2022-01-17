@@ -141,7 +141,7 @@ const loginController = {
       res.cookie("refresh_token", refresh_token, {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
-        Secure: true,
+        secure: true,
         SameSite: "None",
       });
       res.json({
