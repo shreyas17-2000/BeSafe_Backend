@@ -142,7 +142,7 @@ const loginController = {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
         secure: true,
-        SameSite: "None",
+        sameSite: "None",
       });
       res.json({
         success: true,
