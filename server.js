@@ -12,11 +12,11 @@ const app = express();
 app.use(cookieParser());
 const corsOptions = {
   origin: [
-    "localhost:3000",
-    "localhost:19002",
-    "192.168.0.108:19002",
-    "192.168.0.108:3000",
-    "besafeadmin.mehulgawhale.me",
+    "http://localhost:3000",
+    "http://localhost:19002",
+    "http://192.168.0.108:19002",
+    "http://192.168.0.108:3000",
+    "https://besafeadmin.mehulgawhale.me",
   ],
   credentials: true,
   preflightContinue: false,
