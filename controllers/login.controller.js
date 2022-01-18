@@ -135,19 +135,19 @@ const loginController = {
       res.cookie("access_token", access_token, {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
-        // secure: true,
-        // sameSite: "None",
+        secure: true,
+        sameSite: "None",
       });
       res.cookie("refresh_token", refresh_token, {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
-        // secure: true,
-        // sameSite: "None",
+        secure: true,
+        sameSite: "None",
       });
       res.json({
         success: true,
-        // access_token,
-        // refresh_token,
+        access_token,
+        refresh_token,
       });
     } catch (err) {
       return next(err);
