@@ -19,6 +19,8 @@ const corsOptions = {
     "https://besafeadmin.mehulgawhale.me",
   ],
   credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
 
