@@ -11,7 +11,6 @@ const app = express();
 
 app.use(cookieParser());
 const corsOptions = {
-  credentials: true,
   origin: [
     "http://localhost:3000",
     "http://localhost:19002/",
@@ -19,6 +18,10 @@ const corsOptions = {
     "http://192.168.0.108:3000/",
     "https://besafeadmin.mehulgawhale.me/",
   ],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
 
 mongoose.connect(DBURL, {
