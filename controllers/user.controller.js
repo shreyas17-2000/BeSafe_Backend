@@ -39,8 +39,7 @@ const userController = {
       if (!user) {
         return next(CustomErrorHandler.notFound());
       }
-      res.json(user);
-      console.log(user);
+      res.json({ success: true, user });
     } catch (err) {
       return next(err);
     }
