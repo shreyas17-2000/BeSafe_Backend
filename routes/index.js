@@ -11,7 +11,11 @@ const {
   register,
   registerAdmin,
 } = require("../controllers/registerController");
-const { me, allUsers } = require("../controllers/user.controller");
+const {
+  me,
+  allUsers,
+  getAllPolice,
+} = require("../controllers/user.controller");
 const {
   citizenDetails,
   policeDetails,
@@ -107,6 +111,7 @@ async function uploadVerification(req, res, next) {
 router.get("/mydetails", auth, me);
 router.get("/allusers", auth, allUsers);
 router.get("/complaints", auth, stationAdmin, getComplaints);
+router.get("/getAllPolice", auth, getAllPolice);
 
 async function stationAdmin(req, res, next) {
   const { _id, role } = req.user;

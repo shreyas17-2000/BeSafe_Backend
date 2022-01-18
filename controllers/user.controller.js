@@ -30,6 +30,21 @@ const userController = {
       return next(err);
     }
   },
+  async getAllPolice(req, res, next) {
+    try {
+      const user = await User.find({
+        role: 5000,
+        "userDetails:": { $exists: true, $ne: null },
+      }).select("-password -updatedAt -__v -role -createdAt -updatedAt");
+      if (!user) {
+        return next(CustomErrorHandler.notFound());
+      }
+      res.json(user);
+      console.log(user);
+    } catch (err) {
+      return next(err);
+    }
+  },
 };
 
 module.exports = userController;
