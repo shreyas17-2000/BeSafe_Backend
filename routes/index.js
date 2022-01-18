@@ -111,7 +111,7 @@ async function uploadVerification(req, res, next) {
 router.get("/mydetails", auth, me);
 router.get("/allusers", auth, allUsers);
 router.get("/complaints", auth, stationAdmin, getComplaints);
-router.get("/getAllPolice", getAllPolice);
+router.get("/getAllPolice", auth, getAllPolice);
 
 async function stationAdmin(req, res, next) {
   const { _id, role } = req.user;
