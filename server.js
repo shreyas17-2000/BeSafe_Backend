@@ -6,6 +6,7 @@ const router = require("./routes");
 const cookieParser = require("cookie-parser");
 
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -33,6 +34,8 @@ db.once("open", () => console.log("Db Connected"));
 // app.use(express.json({ limit: "50mb" }));
 // app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors(corsOptions));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.json());
 
 app.use("/api", router);

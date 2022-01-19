@@ -56,8 +56,8 @@ router.post(
   "/complaints",
   auth,
   uploads.array("imageProof"),
-  uploadComplaintProof,
-  postComplaints
+  uploadComplaintProof
+  // postComplaints
 );
 router.post("/upload-profile", auth, uploads.single("profile"), uploadProfile);
 router.post(
@@ -76,6 +76,7 @@ router.put("/citizenDetails", auth, citizenDetails);
 router.put("/policeDetails", auth, policeDetails);
 
 async function uploadComplaintProof(req, res, next) {
+  console.log(req);
   const { _id, role } = req.user;
   try {
     const urls = [];
@@ -87,7 +88,9 @@ async function uploadComplaintProof(req, res, next) {
       urls.push(res);
     }
     req.urls = urls;
-    next();
+    console.log(urls);
+    res.json({ s: true });
+    // next();
   } catch (error) {
     next(CustomErrorHandler.serverError());
   }
