@@ -12,6 +12,10 @@ const complaintSchema = new Schema({
     {
       type: new Schema(
         {
+          complaintAgainstName: {
+            type: String,
+            required: true,
+          },
           complaintAgainst: {
             type: String,
             required: true,
