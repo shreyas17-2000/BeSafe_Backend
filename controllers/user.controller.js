@@ -10,8 +10,7 @@ const userController = {
       if (!user) {
         return next(CustomErrorHandler.notFound());
       }
-      res.json(user);
-      console.log(user);
+      res.json({ success: true, user: user });
     } catch (err) {
       return next(err);
     }
