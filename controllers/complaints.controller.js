@@ -30,12 +30,30 @@ const complaintsController = {
           myComplaints,
         });
       }
-      myComplaints = await Complaint.findOne({
-        userId: _id,
+      // userId: _id,
+      //61e063c9377baf64e6468374
+      // console.log(_id);
+      // myComplaints = await Complaint.find({
+      //   complaints: { $elemMatch: { complaintAgaints: _id } },
+      // });
+      myComplaints = await Complaint.find({
+        $and: [
+          {
+            $or: [
+              { userId: _id },
+              {
+                complaints: { $elemMatch: { complaintAgainst: _id } },
+              },
+            ],
+          },
+        ],
       });
-      if (!myComplaints) {
-        return res.json({});
-      }
+      console.log(myComplaints);
+      // { "complaints.$": 1 }
+
+      // if (!myComplaints) {
+      //   return res.json({});
+      // }
     } catch (error) {
       return next(error);
     }
