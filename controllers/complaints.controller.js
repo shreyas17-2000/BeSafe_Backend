@@ -37,14 +37,10 @@ const complaintsController = {
       //   complaints: { $elemMatch: { complaintAgaints: _id } },
       // });
       myComplaints = await Complaint.find({
-        $and: [
+        $or: [
+          { userId: _id },
           {
-            $or: [
-              { userId: _id },
-              {
-                complaints: { $elemMatch: { complaintAgainst: _id } },
-              },
-            ],
+            complaints: { $elemMatch: { complaintAgainst: _id } },
           },
         ],
       });
