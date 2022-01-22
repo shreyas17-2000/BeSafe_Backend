@@ -28,6 +28,7 @@ const {
 const auth = require("../middleware/auth.middleware");
 const multer = require("multer");
 const CustomErrorHandler = require("../services/CustomErrorHandler");
+const { saveExpoToken } = require("../controllers/notification.controller");
 
 const storage = multer.diskStorage({});
 
@@ -74,6 +75,7 @@ router.put("/citizenDetails", auth, citizenDetails);
 
 // police details
 router.put("/policeDetails", auth, policeDetails);
+router.put("/expoTokens", auth, saveExpoToken);
 
 async function uploadComplaintProof(req, res, next) {
   const { _id, role } = req.user;

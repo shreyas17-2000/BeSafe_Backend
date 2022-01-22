@@ -30,12 +30,6 @@ const complaintsController = {
           myComplaints,
         });
       }
-      // userId: _id,
-      //61e063c9377baf64e6468374
-      // console.log(_id);
-      // myComplaints = await Complaint.find({
-      //   complaints: { $elemMatch: { complaintAgaints: _id } },
-      // });
       myComplaints = await Complaint.find({
         $or: [
           { userId: _id },
@@ -44,12 +38,9 @@ const complaintsController = {
           },
         ],
       });
-      console.log(myComplaints);
-      // { "complaints.$": 1 }
-
-      // if (!myComplaints) {
-      //   return res.json({});
-      // }
+      if (!myComplaints) {
+        return res.json({});
+      }
     } catch (error) {
       return next(error);
     }
