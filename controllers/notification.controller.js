@@ -37,7 +37,18 @@ const notificationController = {
     }
   },
   async sendPostNotifications(req, res, next) {
-    const { message, notiTokens } = req.body;
+    const { _id } = req.user;
+    const sendPostNotificationsSchema = Joi.object({
+      toMessage: Joi.string().required(),
+      userMessage: Joi.string().required(),
+      notiTokens: Joi.string().required(),
+    });
+    const { error } = sendPostNotificationsSchema.validate(req.body);
+    if (error) {
+      return next(error);
+    }
+    const { userMessage, toMessage, notiTokens } = req.body;
+
     try {
       const push_tokens = await User.find({
         notificationToken: {
@@ -46,7 +57,7 @@ const notificationController = {
       }).select(
         "-password -updatedAt -__v -email -active -role -userDetails -createdAt -updatedAt -avatar -_id"
       );
-      let body = message;
+      let body = toMessage;
       let messages = createMessages(
         body,
         {
@@ -56,6 +67,14 @@ const notificationController = {
       );
       let tickets = await sendMessages(messages);
       console.log(tickets);
+      const { notificationToken } = await User.findById(_id);
+      if (!notificationToken) {
+        next(CustomErrorHandler.serverError);
+      }
+      const userNoti = await sendMessages(
+        createMessages(userMessage, { userMessage }, [notiTokens])
+      );
+
       res.json({
         success: true,
       });

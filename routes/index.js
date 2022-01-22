@@ -28,7 +28,10 @@ const {
 const auth = require("../middleware/auth.middleware");
 const multer = require("multer");
 const CustomErrorHandler = require("../services/CustomErrorHandler");
-const { saveExpoToken } = require("../controllers/notification.controller");
+const {
+  saveExpoToken,
+  sendPostNotifications,
+} = require("../controllers/notification.controller");
 
 const storage = multer.diskStorage({});
 
@@ -61,6 +64,7 @@ router.post(
   postComplaints
 );
 router.post("/upload-profile", auth, uploads.single("profile"), uploadProfile);
+router.post("/sendNoti", auth, sendPostNotifications);
 router.post(
   "/upload-verification",
   auth,
