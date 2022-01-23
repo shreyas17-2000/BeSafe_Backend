@@ -9,12 +9,14 @@ const complaintsController = {
     let myComplaints;
     try {
       if (role === 5000) {
-        myComplaints = await Complaint.find(
-          {
-            complaints: { $elemMatch: { assignTo: _id } },
-          },
-          { "complaints.$": 1 }
-        );
+        myComplaints = await Complaint.find({
+          $or: [
+            { userId: _id },
+            {
+              complaints: { $elemMatch: { assignTo: _id } },
+            },
+          ],
+        });
         return res.json({
           myComplaints,
         });
@@ -54,7 +56,7 @@ const complaintsController = {
     const complaintSchema = Joi.object({
       complaintAgainstName: Joi.string().max(3).max(250).required(),
       complaintAgainst: Joi.string().max(3).max(250).required(),
-      reason: Joi.string().min(3).max(250).required(),
+      reason: Joi.string().min(3).required(),
       complaintType: Joi.string().min(3).max(250).required(),
       locationName: Joi.string().required(),
       locationAddress: Joi.string().required(),
