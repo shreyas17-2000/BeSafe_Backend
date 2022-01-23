@@ -57,7 +57,7 @@ router.post("/login", login);
 router.post("/admin", adminlogin);
 router.post("/refresh", refresh);
 router.post("/logout", auth, logout);
-router.post("/updateStatus", auth, updateStatus);
+router.put("/updateStatus", auth, updateStatus);
 router.post(
   "/complaints",
   auth,
