@@ -72,7 +72,7 @@ const notificationController = {
         next(CustomErrorHandler.serverError);
       }
       const userNoti = await sendMessages(
-        createMessages(userMessage, { userMessage }, [notiTokens])
+        createMessages(userMessage, { userMessage }, [notificationToken])
       );
 
       res.json({
