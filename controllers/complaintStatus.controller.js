@@ -7,7 +7,6 @@ const ComplaintStatusController = {
     const { role } = req.user;
     const { status, _id } = req.body;
     let myComplaints;
-
     try {
       if (role === 5000) {
         myComplaints = await Complaint.updateOne(
