@@ -32,6 +32,7 @@ const {
   saveExpoToken,
   sendPostNotifications,
 } = require("../controllers/notification.controller");
+const { updateStatus } = require("../controllers/complaintStatus.controller");
 
 const storage = multer.diskStorage({});
 
@@ -56,6 +57,7 @@ router.post("/login", login);
 router.post("/admin", adminlogin);
 router.post("/refresh", refresh);
 router.post("/logout", auth, logout);
+router.post("/updateStatus", auth, updateStatus);
 router.post(
   "/complaints",
   auth,
