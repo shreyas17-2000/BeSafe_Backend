@@ -39,34 +39,34 @@ const notificationController = {
   async sendPostNotifications(req, res, next) {
     const { _id } = req.user;
     const sendPostNotificationsSchema = Joi.object({
-      toMessage: Joi.string().required(),
+      // toMessage: Joi.string().required(),
       userMessage: Joi.string().required(),
-      notiTokens: Joi.string().required(),
+      // notiTokens: Joi.string().required(),
     });
     const { error } = sendPostNotificationsSchema.validate(req.body);
     if (error) {
       return next(error);
     }
-    const { userMessage, toMessage, notiTokens } = req.body;
+    const { userMessage } = req.body;
 
     try {
-      const push_tokens = await User.find({
-        notificationToken: {
-          $in: notiTokens.split(","),
-        },
-      }).select(
-        "-password -updatedAt -__v -email -active -role -userDetails -createdAt -updatedAt -avatar -_id"
-      );
-      let body = toMessage;
-      let messages = createMessages(
-        body,
-        {
-          body,
-        },
-        push_tokens
-      );
-      let tickets = await sendMessages(messages);
-      console.log(tickets);
+      // const push_tokens = await User.find({
+      //   notificationToken: {
+      //     $in: notiTokens.split(","),
+      //   },
+      // }).select(
+      //   "-password -updatedAt -__v -email -active -role -userDetails -createdAt -updatedAt -avatar -_id"
+      // );
+      // let body = toMessage;
+      // let messages = createMessages(
+      //   body,
+      //   {
+      //     body,
+      //   },
+      //   push_tokens
+      // );
+      // let tickets = await sendMessages(messages);
+      // console.log(tickets);
       const { notificationToken } = await User.findById(_id);
       if (!notificationToken) {
         next(CustomErrorHandler.serverError);
