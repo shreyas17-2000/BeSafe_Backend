@@ -20,7 +20,7 @@ const notificationController = {
       const notificationToken = await User.findOne({
         notificationToken: req.body.notificationToken,
       });
-      if (!notificationToken) {
+      if (notificationToken) {
         return next(
           CustomErrorHandler.alreadyExist("The Token Already Exists")
         );
