@@ -125,7 +125,7 @@ async function stationAdmin(req, res, next) {
   const { _id, role } = req.user;
   if (role === 4000) {
     const stationadmin = await User.findById(_id);
-    req.station = stationadmin.userDetails.stationLocation;
+    req.station = stationadmin.userDetails.postingAreaAddress;
     next();
   }
   next();
