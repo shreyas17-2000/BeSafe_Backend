@@ -1,10 +1,8 @@
 const Joi = require("joi");
 const Complaint = require("../models/complaints");
-const User = require("../models/user");
-const CustomErrorHandler = require("../services/CustomErrorHandler");
 
 const complaintsController = {
-  async getComplaints(req, res) {
+  async getComplaints(req, res, next) {
     const { _id, role } = req.user;
     let myComplaints;
     try {
@@ -17,38 +15,29 @@ const complaintsController = {
             },
           ],
         });
-        return res.json({
-          myComplaints,
-        });
-      }
-      if (role === 4000) {
+      } else if (role === 4000) {
         myComplaints = await Complaint.find(
           {
-            complaints: { $elemMatch: { location: { name: req.station } } },
+            complaints: {
+              $elemMatch: { nearestPoliceStationAddress: req.station },
+            },
           },
           { "complaints.$": 1 }
         );
-        return res.json({
-          myComplaints,
+      } else if (role === 3000) {
+        myComplaints = await Complaint.find({
+          $or: [
+            { userId: _id },
+            {
+              complaints: { $elemMatch: { complaintAgainst: _id } },
+            },
+          ],
         });
       }
-      myComplaints = await Complaint.find({
-        $or: [
-          { userId: _id },
-          {
-            complaints: { $elemMatch: { complaintAgainst: _id } },
-          },
-        ],
-      });
-      if (!myComplaints) {
-        return res.json({});
-      }
+      res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
     }
-    return res.json({
-      myComplaints,
-    });
   },
   async postComplaints(req, res, next) {
     const Data = JSON.parse(req.body.data);

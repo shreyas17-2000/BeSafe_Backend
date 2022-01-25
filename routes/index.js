@@ -15,6 +15,7 @@ const {
   me,
   allUsers,
   getAllPolice,
+  getStationPolice,
 } = require("../controllers/user.controller");
 const {
   citizenDetails,
@@ -33,6 +34,7 @@ const {
   sendPostNotifications,
 } = require("../controllers/notification.controller");
 const { updateStatus } = require("../controllers/complaintStatus.controller");
+const User = require("../models/user");
 
 const storage = multer.diskStorage({});
 
@@ -120,13 +122,13 @@ router.get("/mydetails", auth, me);
 router.get("/allusers", auth, allUsers);
 router.get("/complaints", auth, stationAdmin, getComplaints);
 router.get("/getAllPolice", getAllPolice);
+router.get("/getStationPolice", auth, stationAdmin, getStationPolice);
 
 async function stationAdmin(req, res, next) {
   const { _id, role } = req.user;
   if (role === 4000) {
     const stationadmin = await User.findById(_id);
     req.station = stationadmin.userDetails.postingAreaAddress;
-    next();
   }
   next();
 }
