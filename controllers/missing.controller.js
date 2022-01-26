@@ -6,12 +6,12 @@ const missingController = {
     const { _id } = req.user;
     const data = JSON.parse(req.body.data);
     const missingPersonSchema = Joi.object({
-      dateForm: Joi.date().required(),
-      dateTo: Joi.date().required(),
+      dateFrom: Joi.string().required(),
+      dateTo: Joi.string().required(),
       name: Joi.string().required(),
       fatherName: Joi.string().required(),
       height: Joi.string().required(),
-      religion: Joi.striq().required(),
+      religion: Joi.string().required(),
       sex: Joi.string().required(),
       locName: Joi.string().required(),
       locAddress: Joi.string().required(),
@@ -39,17 +39,18 @@ const missingController = {
           success: true,
           result,
         });
-      }
-      addComplaint = await missingPerson.findOneAndUpdate(
-        {
-          userId: _id,
-        },
-        {
-          $push: {
-            missingPerson: { ...data, images: req.urls },
+      } else {
+        addComplaint = await missingPerson.findOneAndUpdate(
+          {
+            userId: _id,
           },
-        }
-      );
+          {
+            $push: {
+              missingPerson: { ...data, images: req.urls },
+            },
+          }
+        );
+      }
     } catch (error) {
       console.log(error);
     }

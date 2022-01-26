@@ -11,7 +11,7 @@ const missingPersonSchema = new Schema({
     {
       type: new Schema(
         {
-          dateForm: {
+          dateFrom: {
             type: String,
             required: true,
           },
@@ -31,6 +31,9 @@ const missingPersonSchema = new Schema({
               type: String,
             },
           ],
+          assignTo: {
+            type: String,
+          },
         },
         { timeseries: true }
       ),
