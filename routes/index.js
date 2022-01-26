@@ -35,6 +35,7 @@ const {
 } = require("../controllers/notification.controller");
 const { updateStatus } = require("../controllers/complaintStatus.controller");
 const User = require("../models/user");
+const { missingPerson } = require("../controllers/missing.controller");
 
 const storage = multer.diskStorage({});
 
@@ -69,6 +70,13 @@ router.post(
 );
 router.post("/upload-profile", auth, uploads.single("profile"), uploadProfile);
 router.post("/sendNoti", auth, sendPostNotifications);
+router.post(
+  "/missingPerson",
+  auth,
+  uploads.array("imageProof"),
+  uploadComplaintProof,
+  missingPerson
+);
 router.post(
   "/upload-verification",
   auth,

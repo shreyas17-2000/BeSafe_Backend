@@ -70,6 +70,7 @@ const complaintsController = {
         });
         const result = await complaint.save();
         return res.json({
+          success: true,
           result,
         });
       }

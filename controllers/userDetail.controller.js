@@ -29,7 +29,6 @@ const userDetailController = {
   },
   async policeDetails(req, res, next) {
     const { _id, role } = req.user;
-    console.log(req.body);
     if (role !== 3000) {
       const policeInfoSchema = Joi.object({
         adhaarCard: Joi.string()

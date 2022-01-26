@@ -19,13 +19,9 @@ const registerController = {
       role: Joi.number(),
     });
     const { error } = registerSchema.validate(req.body);
-    // password: Joi.string()
-    // .pattern(new RegExp("/^(?=.*[A-Z])(?=.*[a-z])(?=.*d).*$/"))
-    // .required(),
     if (error) {
       return next(error);
     }
-
     //check if the user is already in the database
     try {
       const exits = await User.exists({
