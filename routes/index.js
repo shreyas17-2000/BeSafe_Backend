@@ -37,6 +37,7 @@ const { updateStatus } = require("../controllers/complaintStatus.controller");
 const User = require("../models/user");
 const { missingPerson } = require("../controllers/missing.controller");
 const { unIdPerson } = require("../controllers/unIdPerson.controller");
+const { mslf } = require("../controllers/mslf.controller");
 
 const storage = multer.diskStorage({});
 
@@ -84,6 +85,13 @@ router.post(
   uploads.array("imageProof"),
   uploadComplaintProof,
   unIdPerson
+);
+router.post(
+  "/mslf",
+  auth,
+  uploads.array("imageProof"),
+  uploadComplaintProof,
+  mslf
 );
 router.post(
   "/upload-verification",
