@@ -85,7 +85,7 @@ const unIdPersonController = {
           { "complaints.$": 1 }
         );
       } else if (role === 3000) {
-        myComplaints = await unIdPerson.find({ userId: _id });
+        myComplaints = await unIdPerson.find({ $or: [{ userId: _id }] });
       }
       req.io.emit("getUnIdPerson", {
         success: true,

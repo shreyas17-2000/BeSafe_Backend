@@ -82,7 +82,7 @@ const missingController = {
           { "complaints.$": 1 }
         );
       } else if (role === 3000) {
-        myComplaints = await missingPerson.find({ userId: _id });
+        myComplaints = await missingPerson.find({ $or: [{ userId: _id }] });
       }
       req.io.emit("getmslf", {
         success: true,
