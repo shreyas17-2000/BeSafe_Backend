@@ -23,6 +23,10 @@ const mslfSchema = new Schema({
           thingName: { type: String, required: true },
           stationName: { type: String, required: true },
           stationAddress: { type: String, required: true },
+          status: {
+            type: String,
+            default: "In Queue",
+          },
           images: [
             {
               type: String,

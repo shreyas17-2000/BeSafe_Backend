@@ -28,6 +28,10 @@ const unIdPersonSchema = new Schema({
           locAddress: { type: String, required: true },
           stationName: { type: String, required: true },
           stationAddress: { type: String, required: true },
+          status: {
+            type: String,
+            default: "In Queue",
+          },
           expectedAge: { type: String, required: true },
           images: [
             {
