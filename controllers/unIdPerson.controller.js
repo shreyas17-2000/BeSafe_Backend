@@ -62,6 +62,40 @@ const unIdPersonController = {
       addComplaint,
     });
   },
+  async getUnIdPerson(req, res, next) {
+    const { _id, role } = req.user;
+    let myComplaints;
+    try {
+      if (role === 5000) {
+        myComplaints = await unIdPerson.find({
+          $or: [
+            { userId: _id },
+            {
+              unIdPerson: { $elemMatch: { assignTo: _id } },
+            },
+          ],
+        });
+      } else if (role === 4000) {
+        myComplaints = await unIdPerson.find(
+          {
+            unIdPerson: {
+              $elemMatch: { stationAddress: req.station },
+            },
+          },
+          { "complaints.$": 1 }
+        );
+      } else if (role === 3000) {
+        myComplaints = await unIdPerson.find({ userId: _id });
+      }
+      req.io.emit("getUnIdPerson", {
+        success: true,
+        myComplaints,
+      });
+      res.json({ success: true });
+    } catch (error) {
+      return next(error);
+    }
+  },
 };
 
 module.exports = unIdPersonController;

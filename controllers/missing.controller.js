@@ -59,6 +59,40 @@ const missingController = {
       addComplaint,
     });
   },
+  async getmissingPerson(req, res, next) {
+    const { _id, role } = req.user;
+    let myComplaints;
+    try {
+      if (role === 5000) {
+        myComplaints = await missingPerson.find({
+          $or: [
+            { userId: _id },
+            {
+              missingPerson: { $elemMatch: { assignTo: _id } },
+            },
+          ],
+        });
+      } else if (role === 4000) {
+        myComplaints = await missingPerson.find(
+          {
+            missingPerson: {
+              $elemMatch: { stationAddress: req.station },
+            },
+          },
+          { "complaints.$": 1 }
+        );
+      } else if (role === 3000) {
+        myComplaints = await missingPerson.find({ userId: _id });
+      }
+      req.io.emit("getmslf", {
+        success: true,
+        myComplaints,
+      });
+      res.json({ success: true });
+    } catch (error) {
+      return next(error);
+    }
+  },
 };
 
 module.exports = missingController;

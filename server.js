@@ -1,15 +1,19 @@
 const cors = require("cors");
 const express = require("express");
+const { createServer } = require("http"); // you can use https as well
 const { PORT, DBURL } = require("./config");
 const errorHandler = require("./middleware/errorHandler");
 const router = require("./routes");
 const cookieParser = require("cookie-parser");
+const socketIo = require("socket.io");
 
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 const app = express();
-
+const server = createServer(app);
+const io = socketIo(server);
+module.exports = io;
 app.use(cookieParser());
 const corsOptions = {
   origin: [
@@ -31,11 +35,17 @@ mongoose.connect(DBURL, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", () => console.log("Db Connected"));
+
 // app.use(express.json({ limit: "50mb" }));
 // app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+  req.io = io;
+  return next();
+});
+
 app.use(express.json());
 
 app.use("/api", router);
@@ -44,6 +54,11 @@ app.use(errorHandler);
 
 const port = PORT || "5000";
 
-app.listen(port, () => {
-  console.log(`listening on port ${port}`);
+server.listen(port, () => console.log(`Server started!`));
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
 });

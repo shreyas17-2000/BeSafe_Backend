@@ -56,6 +56,40 @@ const mslfController = {
       addComplaint,
     });
   },
+  async getmslf(req, res, next) {
+    const { _id, role } = req.user;
+    let myComplaints;
+    try {
+      if (role === 5000) {
+        myComplaints = await mslf.find({
+          $or: [
+            { userId: _id },
+            {
+              mslf: { $elemMatch: { assignTo: _id } },
+            },
+          ],
+        });
+      } else if (role === 4000) {
+        myComplaints = await mslf.find(
+          {
+            mslf: {
+              $elemMatch: { stationAddress: req.station },
+            },
+          },
+          { "complaints.$": 1 }
+        );
+      } else if (role === 3000) {
+        myComplaints = await mslf.find({ userId: _id });
+      }
+      req.io.emit("getmslf", {
+        success: true,
+        myComplaints,
+      });
+      res.json({ success: true });
+    } catch (error) {
+      return next(error);
+    }
+  },
 };
 
 module.exports = mslfController;

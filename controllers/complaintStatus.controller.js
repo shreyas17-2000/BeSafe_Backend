@@ -17,9 +17,8 @@ const ComplaintStatusController = {
             },
           }
         );
-        return res.json({
-          myComplaints,
-        });
+        req.io.emit("statusUpdated", { success: true });
+        return res.json(myComplaints);
       }
     } catch (error) {
       next(error);

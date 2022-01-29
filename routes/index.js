@@ -35,9 +35,16 @@ const {
 } = require("../controllers/notification.controller");
 const { updateStatus } = require("../controllers/complaintStatus.controller");
 const User = require("../models/user");
-const { missingPerson } = require("../controllers/missing.controller");
-const { unIdPerson } = require("../controllers/unIdPerson.controller");
-const { mslf } = require("../controllers/mslf.controller");
+const {
+  missingPerson,
+  getmissingPerson,
+} = require("../controllers/missing.controller");
+const {
+  unIdPerson,
+  getUnIdPerson,
+} = require("../controllers/unIdPerson.controller");
+const { mslf, getmslf } = require("../controllers/mslf.controller");
+const io = require("../server");
 
 const storage = multer.diskStorage({});
 
@@ -145,6 +152,9 @@ async function uploadVerification(req, res, next) {
 router.get("/mydetails", auth, me);
 router.get("/allusers", auth, allUsers);
 router.get("/complaints", auth, stationAdmin, getComplaints);
+router.get("/getMissingPerson", auth, stationAdmin, getmissingPerson);
+router.get("/getmslf", auth, stationAdmin, getmslf);
+router.get("/getUnIdPerson", auth, stationAdmin, getUnIdPerson);
 router.get("/getAllPolice", getAllPolice);
 router.get("/getStationPolice", auth, stationAdmin, getStationPolice);
 
