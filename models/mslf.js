@@ -11,6 +11,7 @@ const mslfSchema = new Schema({
     {
       type: new Schema(
         {
+          incidenceDesc: { type: String, required: true },
           dateFrom: {
             type: String,
             required: true,

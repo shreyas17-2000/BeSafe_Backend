@@ -6,6 +6,7 @@ const mslfController = {
     const { _id } = req.user;
     const data = JSON.parse(req.body.data);
     const mslfSchema = Joi.object({
+      incidenceDesc: Joi.string().required(),
       dateFrom: Joi.string().required(),
       dateTo: Joi.string().required(),
       stationName: Joi.string().required(),

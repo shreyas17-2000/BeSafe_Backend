@@ -6,6 +6,7 @@ const unIdPersonController = {
     const { _id } = req.user;
     const data = JSON.parse(req.body.data);
     const unIdPersonSchema = Joi.object({
+      incidenceDesc: Joi.string().required(),
       dateFrom: Joi.string().required(),
       dateTo: Joi.string().required(),
       height: Joi.string().required(),
