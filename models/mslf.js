@@ -37,8 +37,10 @@ const mslfSchema = new Schema({
             type: String,
           },
         },
-        { timeseries: true }
+        { timestamps: true }
       ),
+      required: true,
+      unique: true,
     },
   ],
 });

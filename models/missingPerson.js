@@ -40,8 +40,10 @@ const missingPersonSchema = new Schema({
             type: String,
           },
         },
-        { timeseries: true }
+        { timestamps: true }
       ),
+      required: true,
+      unique: true,
     },
   ],
 });
