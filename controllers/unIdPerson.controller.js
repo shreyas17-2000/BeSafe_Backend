@@ -70,9 +70,14 @@ const unIdPersonController = {
       if (role === 5000) {
         myComplaints = await unIdPerson.find({
           $or: [
-            { userId: _id },
             {
-              unIdPerson: { $elemMatch: { assignTo: _id } },
+              userId: _id,
+              unIdPerson: { $elemMatch: { status: { $ne: "Solved" } } },
+            },
+            {
+              unIdPerson: {
+                $elemMatch: { assignTo: _id, status: { $ne: "Solved" } },
+              },
             },
           ],
         });
@@ -80,15 +85,73 @@ const unIdPersonController = {
         myComplaints = await unIdPerson.find(
           {
             unIdPerson: {
-              $elemMatch: { stationAddress: req.station },
+              $elemMatch: {
+                stationAddress: req.station,
+                status: { $ne: "Solved" },
+              },
             },
           },
           { "complaints.$": 1 }
         );
       } else if (role === 3000) {
-        myComplaints = await unIdPerson.find({ $or: [{ userId: _id }] });
+        myComplaints = await unIdPerson.find({
+          $or: [
+            {
+              userId: _id,
+              unIdPerson: { $elemMatch: { status: { $ne: "Solved" } } },
+            },
+          ],
+        });
       }
       req.io.emit("getUnIdPerson", {
+        success: true,
+        myComplaints,
+      });
+      res.json({ success: true });
+    } catch (error) {
+      return next(error);
+    }
+  },
+  async UnIdPersonHistory(req, res, next) {
+    const { _id, role } = req.user;
+    let myComplaints;
+    try {
+      if (role === 5000) {
+        myComplaints = await unIdPerson.find({
+          $or: [
+            {
+              userId: _id,
+              unIdPerson: {
+                $elemMatch: { status: "Solved" },
+              },
+            },
+            {
+              unIdPerson: { $elemMatch: { assignTo: _id, status: "Solved" } },
+            },
+          ],
+        });
+      } else if (role === 4000) {
+        myComplaints = await unIdPerson.find(
+          {
+            unIdPerson: {
+              $elemMatch: { stationAddress: req.station, status: "Solved" },
+            },
+          },
+          { "complaints.$": 1 }
+        );
+      } else if (role === 3000) {
+        myComplaints = await unIdPerson.find({
+          $or: [
+            {
+              userId: _id,
+              unIdPerson: {
+                $elemMatch: { status: "Solved" },
+              },
+            },
+          ],
+        });
+      }
+      req.io.emit("UnIdPersonHistory", {
         success: true,
         myComplaints,
       });

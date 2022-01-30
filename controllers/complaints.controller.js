@@ -9,9 +9,16 @@ const complaintsController = {
       if (role === 5000) {
         myComplaints = await Complaint.find({
           $or: [
-            { userId: _id },
             {
-              complaints: { $elemMatch: { assignTo: _id } },
+              userId: _id,
+              complaints: {
+                $elemMatch: { status: { $ne: "Solved" } },
+              },
+            },
+            {
+              complaints: {
+                $elemMatch: { status: { $ne: "Solved" }, assignTo: _id },
+              },
             },
           ],
         });
@@ -19,7 +26,10 @@ const complaintsController = {
         myComplaints = await Complaint.find(
           {
             complaints: {
-              $elemMatch: { nearestPoliceStationAddress: req.station },
+              $elemMatch: {
+                nearestPoliceStationAddress: req.station,
+                status: { $ne: "Solved" },
+              },
             },
           },
           { "complaints.$": 1 }
@@ -29,12 +39,78 @@ const complaintsController = {
           $or: [
             { userId: _id },
             {
-              complaints: { $elemMatch: { complaintAgainst: _id } },
+              complaints: {
+                $elemMatch: {
+                  complaintAgainst: _id,
+                  status: { $nin: ["Solved"] },
+                },
+              },
             },
           ],
         });
       }
       req.io.emit("getComplaints", {
+        success: true,
+        myComplaints,
+      });
+      res.json({ success: true, myComplaints });
+    } catch (error) {
+      return next(error);
+    }
+  },
+  async ComplaintsHistory(req, res, next) {
+    const { _id, role } = req.user;
+    let myComplaints;
+    try {
+      if (role === 5000) {
+        myComplaints = await Complaint.find({
+          $or: [
+            {
+              userId: _id,
+              complaints: {
+                $elemMatch: { status: "Solved" },
+              },
+            },
+            {
+              complaints: {
+                $elemMatch: { assignTo: _id, status: "Solved" },
+              },
+            },
+          ],
+        });
+      } else if (role === 4000) {
+        myComplaints = await Complaint.find(
+          {
+            complaints: {
+              $elemMatch: {
+                nearestPoliceStationAddress: req.station,
+                status: "Solved",
+              },
+            },
+          },
+          { "complaints.$": 1 }
+        );
+      } else if (role === 3000) {
+        myComplaints = await Complaint.find({
+          $or: [
+            {
+              userId: _id,
+              complaints: {
+                $elemMatch: { status: "Solved" },
+              },
+            },
+            {
+              complaints: {
+                $elemMatch: {
+                  complaintAgainst: _id,
+                  status: "Solved",
+                },
+              },
+            },
+          ],
+        });
+      }
+      req.io.emit("ComplaintsHistory", {
         success: true,
         myComplaints,
       });

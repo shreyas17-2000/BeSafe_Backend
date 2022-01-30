@@ -3,6 +3,7 @@ const {
   complaints,
   getComplaints,
   postComplaints,
+  ComplaintsHistory,
 } = require("../controllers/complaints.controller");
 const { login, adminlogin } = require("../controllers/login.controller");
 const { logout } = require("../controllers/logout.controller");
@@ -38,12 +39,18 @@ const User = require("../models/user");
 const {
   missingPerson,
   getmissingPerson,
+  missingPersonHistory,
 } = require("../controllers/missing.controller");
 const {
   unIdPerson,
   getUnIdPerson,
+  UnIdPersonHistory,
 } = require("../controllers/unIdPerson.controller");
-const { mslf, getmslf } = require("../controllers/mslf.controller");
+const {
+  mslf,
+  getmslf,
+  mslfHistory,
+} = require("../controllers/mslf.controller");
 const io = require("../server");
 
 const storage = multer.diskStorage({});
@@ -152,9 +159,13 @@ async function uploadVerification(req, res, next) {
 router.get("/mydetails", auth, me);
 router.get("/allusers", auth, allUsers);
 router.get("/complaints", auth, stationAdmin, getComplaints);
+router.get("/complaintsHistory", auth, stationAdmin, ComplaintsHistory);
 router.get("/getMissingPerson", auth, stationAdmin, getmissingPerson);
+router.get("/missingPersonHistory", auth, stationAdmin, missingPersonHistory);
 router.get("/getmslf", auth, stationAdmin, getmslf);
+router.get("/mslfHistory", auth, stationAdmin, mslfHistory);
 router.get("/getUnIdPerson", auth, stationAdmin, getUnIdPerson);
+router.get("/unIdPersonHistory", auth, stationAdmin, UnIdPersonHistory);
 router.get("/getAllPolice", getAllPolice);
 router.get("/getStationPolice", auth, stationAdmin, getStationPolice);
 

@@ -64,9 +64,14 @@ const mslfController = {
       if (role === 5000) {
         myComplaints = await mslf.find({
           $or: [
-            { userId: _id },
             {
-              mslf: { $elemMatch: { assignTo: _id } },
+              userId: _id,
+              mslf: { $elemMatch: { status: { $ne: "Solved" } } },
+            },
+            {
+              mslf: {
+                $elemMatch: { assignTo: _id, status: { $ne: "Solved" } },
+              },
             },
           ],
         });
@@ -74,15 +79,68 @@ const mslfController = {
         myComplaints = await mslf.find(
           {
             mslf: {
-              $elemMatch: { stationAddress: req.station },
+              $elemMatch: {
+                stationAddress: req.station,
+                status: { $ne: "Solved" },
+              },
             },
           },
           { "complaints.$": 1 }
         );
       } else if (role === 3000) {
-        myComplaints = await mslf.find({ $or: [{ userId: _id }] });
+        myComplaints = await mslf.find({
+          $or: [{ userId: _id, status: { $ne: "Solved" } }],
+        });
       }
       req.io.emit("getmslf", {
+        success: true,
+        myComplaints,
+      });
+      res.json({ success: true });
+    } catch (error) {
+      return next(error);
+    }
+  },
+  async mslfHistory(req, res, next) {
+    const { _id, role } = req.user;
+    let myComplaints;
+    try {
+      if (role === 5000) {
+        myComplaints = await mslf.find({
+          $or: [
+            {
+              userId: _id,
+              mslf: {
+                $elemMatch: { status: "Solved" },
+              },
+            },
+            {
+              mslf: { $elemMatch: { assignTo: _id, status: "Solved" } },
+            },
+          ],
+        });
+      } else if (role === 4000) {
+        myComplaints = await mslf.find(
+          {
+            mslf: {
+              $elemMatch: { stationAddress: req.station, status: "Solved" },
+            },
+          },
+          { "complaints.$": 1 }
+        );
+      } else if (role === 3000) {
+        myComplaints = await mslf.find({
+          $or: [
+            {
+              userId: _id,
+              mslf: {
+                $elemMatch: { status: "Solved" },
+              },
+            },
+          ],
+        });
+      }
+      req.io.emit("mslfHistory", {
         success: true,
         myComplaints,
       });
