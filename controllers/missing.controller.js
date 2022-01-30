@@ -142,9 +142,7 @@ const missingController = {
           $or: [
             {
               userId: _id,
-              missingPerson: {
-                $elemMatch: { status: "Solved" },
-              },
+              "missingPerson.status": "Solved",
             },
           ],
         });
