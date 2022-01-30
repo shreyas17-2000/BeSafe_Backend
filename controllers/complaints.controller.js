@@ -55,6 +55,11 @@ const complaintsController = {
           success: true,
           myComplaints: [],
         });
+      } else {
+        req.io.emit("getComplaints", {
+          success: true,
+          myComplaints: [],
+        });
       }
       res.json({ success: true });
     } catch (error) {
