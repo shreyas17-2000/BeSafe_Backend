@@ -50,10 +50,12 @@ const complaintsController = {
         });
       }
       console.log(myComplaints);
-      req.io.emit("getComplaints", {
-        success: true,
-        myComplaints,
-      });
+      if (!myComplaints) {
+        req.io.emit("getComplaints", {
+          success: true,
+          myComplaints: [],
+        });
+      }
       res.json({ success: true });
     } catch (error) {
       return next(error);
