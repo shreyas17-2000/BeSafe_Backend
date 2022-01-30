@@ -89,14 +89,23 @@ const mslfController = {
         );
       } else if (role === 3000) {
         myComplaints = await mslf.find({
-          $or: [{ userId: _id, status: { $ne: "Solved" } }],
+          $or: [
+            {
+              userId: _id,
+              mslf: {
+                $elemMatch: {
+                  status: { $ne: "Solved" },
+                },
+              },
+            },
+          ],
         });
       }
       req.io.emit("getmslf", {
         success: true,
         myComplaints,
       });
-      res.json({ success: true });
+      res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
     }
