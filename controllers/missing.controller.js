@@ -94,7 +94,6 @@ const missingController = {
               userId: _id,
               missingPerson: {
                 $elemMatch: {
-                  stationAddress: req.station,
                   status: { $ne: "Solved" },
                 },
               },
