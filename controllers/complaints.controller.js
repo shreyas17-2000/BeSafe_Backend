@@ -49,7 +49,6 @@ const complaintsController = {
           ],
         });
       }
-      console.log(myComplaints);
       if (!myComplaints) {
         req.io.emit("getComplaints", {
           success: true,
@@ -58,7 +57,7 @@ const complaintsController = {
       } else {
         req.io.emit("getComplaints", {
           success: true,
-          myComplaints: [],
+          myComplaints,
         });
       }
       res.json({ success: true });
