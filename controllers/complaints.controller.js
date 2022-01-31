@@ -133,7 +133,6 @@ const complaintsController = {
       complaintAgainstName: Joi.string().max(3).max(250).required(),
       complaintAgainst: Joi.string().max(3).max(250).required(),
       reason: Joi.string().min(3).required(),
-      complaintType: Joi.string().min(3).max(250).required(),
       locationName: Joi.string().required(),
       locationAddress: Joi.string().required(),
       currentSituation: Joi.string().required(),

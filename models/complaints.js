@@ -24,10 +24,7 @@ const complaintSchema = new Schema({
             type: String,
             required: true,
           },
-          complaintType: {
-            type: String,
-            required: true,
-          },
+
           locationName: {
             type: String,
             required: true,
