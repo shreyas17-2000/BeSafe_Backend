@@ -155,26 +155,25 @@ const complaintsController = {
           userId: _id,
           complaints: { ...Data, images: req.urls },
         });
-        const result = await complaint.save();
-        return res.json({
-          success: true,
-          result,
-        });
-      }
-      addComplaint = await Complaint.findOneAndUpdate(
-        {
-          userId: _id,
-        },
-        {
-          $push: {
-            complaints: { ...Data, images: req.urls },
+        addComplaint = await complaint.save();
+      } else {
+        addComplaint = await Complaint.findOneAndUpdate(
+          {
+            userId: _id,
           },
-        }
-      );
+          {
+            $push: {
+              complaints: { ...Data, images: req.urls },
+            },
+          }
+        );
+      }
     } catch (err) {
       return next(err);
     }
+    req.io.emit("statusUpdated", { success: true });
     return res.json({
+      success: true,
       addComplaint,
     });
   },

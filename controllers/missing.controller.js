@@ -35,11 +35,7 @@ const missingController = {
           userId: _id,
           missingPerson: { ...data, images: req.urls },
         });
-        const result = await complaint.save();
-        return res.json({
-          success: true,
-          result,
-        });
+        addComplaint = await complaint.save();
       } else {
         addComplaint = await missingPerson.findOneAndUpdate(
           {
@@ -55,6 +51,7 @@ const missingController = {
     } catch (error) {
       console.log(error);
     }
+    req.io.emit("statusUpdated", { success: true });
     return res.json({
       success: true,
       addComplaint,

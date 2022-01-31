@@ -38,11 +38,7 @@ const unIdPersonController = {
           userId: _id,
           unIdPerson: { ...data, images: req.urls },
         });
-        const result = await complaint.save();
-        return res.json({
-          success: true,
-          result,
-        });
+        addComplaint = await complaint.save();
       } else {
         addComplaint = await unIdPerson.findOneAndUpdate(
           {
@@ -58,6 +54,7 @@ const unIdPersonController = {
     } catch (error) {
       console.log(error);
     }
+    req.io.emit("statusUpdated", { success: true });
     return res.json({
       success: true,
       addComplaint,

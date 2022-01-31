@@ -32,11 +32,7 @@ const mslfController = {
           userId: _id,
           mslf: { ...data, images: req.urls },
         });
-        const result = await complaint.save();
-        return res.json({
-          success: true,
-          result,
-        });
+        addComplaint = await complaint.save();
       } else {
         addComplaint = await mslf.findOneAndUpdate(
           {
@@ -52,6 +48,7 @@ const mslfController = {
     } catch (error) {
       console.log(error);
     }
+    req.io.emit("statusUpdated", { success: true });
     return res.json({
       success: true,
       addComplaint,
