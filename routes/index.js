@@ -5,7 +5,12 @@ const {
   postComplaints,
   ComplaintsHistory,
 } = require("../controllers/complaints.controller");
-const { login, adminlogin } = require("../controllers/login.controller");
+const {
+  login,
+  adminlogin,
+  resetPassword,
+  forgotPassword,
+} = require("../controllers/login.controller");
 const { logout } = require("../controllers/logout.controller");
 const { refresh } = require("../controllers/refreshToken.controller");
 const {
@@ -72,6 +77,8 @@ router.post("/register", register);
 // router.post("/registerAdmin", registerAdmin);
 
 router.post("/login", login);
+router.post("/reset-password", resetPassword);
+router.post("/forgot-password", forgotPassword);
 
 router.post("/admin", adminlogin);
 router.post("/refresh", refresh);

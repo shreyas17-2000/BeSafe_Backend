@@ -153,6 +153,140 @@ const loginController = {
       return next(err);
     }
   },
+  async resetPassword(req, res, next) {
+    // validation
+    const loginSchema = Joi.object({
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+      newPass: Joi.string().required(),
+      confirmPass: Joi.ref("newPass"),
+    });
+    const { error } = loginSchema.validate(req.body);
+    if (error) {
+      return next(error);
+    }
+    try {
+      const user = await User.findOne({
+        email: req.body.email,
+      });
+      if (!user) {
+        return next(CustomErrorHandler.wrongCredentials());
+      }
+      //compare password
+      const match = await bcrypt.compare(req.body.password, user.password);
+      if (!match) {
+        return next(CustomErrorHandler.wrongCredentials());
+      }
+      const tokens = await RefreshToken.findOne({
+        userid: user._id,
+      });
+      //organize it
+      const access_token = JwtService.sign({
+        _id: user._id,
+        role: user.role,
+      });
+      const refresh_token = JwtService.sign(
+        { _id: user._id, role: user.role },
+        "1y",
+        REFRESH_SECRET
+      );
+      const hashedPassword = await bcrypt.hash(req.body.newPass, 10);
+      // database whitelist
+      const reset = await User.findByIdAndUpdate(user._id, {
+        password: hashedPassword,
+      });
+      if (!tokens) {
+        await RefreshToken.create({
+          userid: user._id,
+          refreshToken: refresh_token,
+        });
+
+        return res.json({
+          success: true,
+          access_token,
+          refresh_token,
+        });
+      }
+      await RefreshToken.findOneAndUpdate(
+        { userid: user._id },
+        {
+          refreshToken: refresh_token,
+        }
+      );
+      return res.json({
+        success: true,
+        access_token,
+        refresh_token,
+        result: user,
+      });
+    } catch (err) {
+      return next(err);
+    }
+  },
+  async forgotPassword(req, res, next) {
+    // validation
+    const loginSchema = Joi.object({
+      email: Joi.string().email().required(),
+      newPass: Joi.string().required(),
+      confirmPass: Joi.ref("newPass"),
+    });
+    const { error } = loginSchema.validate(req.body);
+    if (error) {
+      return next(error);
+    }
+    try {
+      const user = await User.findOne({
+        email: req.body.email,
+      });
+      if (!user) {
+        return next(CustomErrorHandler.wrongCredentials());
+      }
+      //compare password
+      const tokens = await RefreshToken.findOne({
+        userid: user._id,
+      });
+      //organize it
+      const access_token = JwtService.sign({
+        _id: user._id,
+        role: user.role,
+      });
+      const refresh_token = JwtService.sign(
+        { _id: user._id, role: user.role },
+        "1y",
+        REFRESH_SECRET
+      );
+      const hashedPassword = await bcrypt.hash(req.body.newPass, 10);
+      // database whitelist
+      const reset = await User.findByIdAndUpdate(user._id, {
+        password: hashedPassword,
+      });
+      if (!tokens) {
+        await RefreshToken.create({
+          userid: user._id,
+          refreshToken: refresh_token,
+        });
+        return res.json({
+          success: true,
+          access_token,
+          refresh_token,
+        });
+      }
+      await RefreshToken.findOneAndUpdate(
+        { userid: user._id },
+        {
+          refreshToken: refresh_token,
+        }
+      );
+      return res.json({
+        success: true,
+        access_token,
+        refresh_token,
+        result: user,
+      });
+    } catch (err) {
+      return next(err);
+    }
+  },
 };
 
 module.exports = loginController;
