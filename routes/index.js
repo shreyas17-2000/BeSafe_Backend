@@ -77,7 +77,7 @@ router.post("/register", register);
 // router.post("/registerAdmin", registerAdmin);
 
 router.post("/login", login);
-router.post("/reset-password", resetPassword);
+router.post("/reset-password", auth, resetPassword);
 router.post("/forgot-password", forgotPassword);
 
 router.post("/admin", adminlogin);

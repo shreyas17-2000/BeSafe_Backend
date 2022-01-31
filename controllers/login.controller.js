@@ -155,8 +155,8 @@ const loginController = {
   },
   async resetPassword(req, res, next) {
     // validation
+    const { _id } = req.user;
     const loginSchema = Joi.object({
-      email: Joi.string().email().required(),
       password: Joi.string().required(),
       newPass: Joi.string().required(),
       confirmPass: Joi.ref("newPass"),
@@ -166,16 +166,18 @@ const loginController = {
       return next(error);
     }
     try {
-      const user = await User.findOne({
-        email: req.body.email,
-      });
+      const user = await User.findById(_id);
       if (!user) {
         return next(CustomErrorHandler.wrongCredentials());
       }
       //compare password
       const match = await bcrypt.compare(req.body.password, user.password);
       if (!match) {
-        return next(CustomErrorHandler.wrongCredentials());
+        return next(
+          CustomErrorHandler.wrongCredentials(
+            "Password must match the current password"
+          )
+        );
       }
       const tokens = await RefreshToken.findOne({
         userid: user._id,
@@ -192,7 +194,7 @@ const loginController = {
       );
       const hashedPassword = await bcrypt.hash(req.body.newPass, 10);
       // database whitelist
-      const reset = await User.findByIdAndUpdate(user._id, {
+      const reset = await User.findByIdAndUpdate(_id, {
         password: hashedPassword,
       });
       if (!tokens) {
