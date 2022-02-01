@@ -57,7 +57,13 @@ const {
   mslfHistory,
 } = require("../controllers/mslf.controller");
 const io = require("../server");
-const { assignPolice } = require("../controllers/assignPolice.controller");
+const {
+  assignPolice,
+  assignReportPolice,
+  assignMslf,
+  assignMissing,
+  assignUnIdPerson,
+} = require("../controllers/assignPolice.controller");
 
 const storage = multer.diskStorage({});
 
@@ -161,7 +167,10 @@ async function uploadVerification(req, res, next) {
   }
 }
 // assign complaint
-router.put("/assignComplaint", auth, stationAdmin, assignPolice);
+router.put("/assignReport", auth, stationAdmin, assignReportPolice);
+router.put("/assignMissing", auth, stationAdmin, assignMissing);
+router.put("/assignMSLF", auth, stationAdmin, assignMslf);
+router.put("/assignUnIdPerson", auth, stationAdmin, assignUnIdPerson);
 
 // get
 router.get("/mydetails", auth, me);
