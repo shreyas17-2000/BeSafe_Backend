@@ -73,17 +73,19 @@ const missingController = {
           ],
         });
       } else if (role === 4000) {
-        myComplaints = await missingPerson.find(
-          {
-            missingPerson: {
-              $elemMatch: {
-                stationAddress: req.station,
-                status: { $ne: "Solved" },
+        myComplaints = await missingPerson.find({
+          $or: [
+            { userId: _id },
+            {
+              missingPerson: {
+                $elemMatch: {
+                  stationAddress: req.station,
+                  status: { $ne: "Solved" },
+                },
               },
             },
-          },
-          { "complaints.$": 1 }
-        );
+          ],
+        });
       } else if (role === 3000) {
         myComplaints = await missingPerson.find({
           $or: [
@@ -102,7 +104,7 @@ const missingController = {
         success: true,
         myComplaints,
       });
-      res.json({ success: true });
+      res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
     }

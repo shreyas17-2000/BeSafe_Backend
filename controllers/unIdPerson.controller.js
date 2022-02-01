@@ -79,17 +79,19 @@ const unIdPersonController = {
           ],
         });
       } else if (role === 4000) {
-        myComplaints = await unIdPerson.find(
-          {
-            unIdPerson: {
-              $elemMatch: {
-                stationAddress: req.station,
-                status: { $ne: "Solved" },
+        myComplaints = await unIdPerson.find({
+          $or: [
+            { userId: _id },
+            {
+              unIdPerson: {
+                $elemMatch: {
+                  stationAddress: req.station,
+                  status: { $ne: "Solved" },
+                },
               },
             },
-          },
-          { "complaints.$": 1 }
-        );
+          ],
+        });
       } else if (role === 3000) {
         myComplaints = await unIdPerson.find({
           $or: [

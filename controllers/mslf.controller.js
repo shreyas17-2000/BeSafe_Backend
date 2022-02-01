@@ -73,17 +73,19 @@ const mslfController = {
           ],
         });
       } else if (role === 4000) {
-        myComplaints = await mslf.find(
-          {
-            mslf: {
-              $elemMatch: {
-                stationAddress: req.station,
-                status: { $ne: "Solved" },
+        myComplaints = await mslf.find({
+          $or: [
+            { userId: _id },
+            {
+              mslf: {
+                $elemMatch: {
+                  stationAddress: req.station,
+                  status: { $ne: "Solved" },
+                },
               },
             },
-          },
-          { "complaints.$": 1 }
-        );
+          ],
+        });
       } else if (role === 3000) {
         myComplaints = await mslf.find({
           $or: [

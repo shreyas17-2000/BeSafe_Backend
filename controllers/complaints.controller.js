@@ -23,17 +23,19 @@ const complaintsController = {
           ],
         });
       } else if (role === 4000) {
-        myComplaints = await Complaint.find(
-          {
-            complaints: {
-              $elemMatch: {
-                nearestPoliceStationAddress: req.station,
-                status: { $ne: "Solved" },
+        myComplaints = await Complaint.find({
+          $or: [
+            { userId: _id },
+            {
+              complaints: {
+                $elemMatch: {
+                  nearestPoliceStationAddress: req.station,
+                  status: { $ne: "Solved" },
+                },
               },
             },
-          },
-          { "complaints.$": 1 }
-        );
+          ],
+        });
       } else if (role === 3000) {
         myComplaints = await Complaint.find({
           $or: [
