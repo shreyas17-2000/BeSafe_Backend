@@ -57,6 +57,7 @@ const {
   mslfHistory,
 } = require("../controllers/mslf.controller");
 const io = require("../server");
+const { assignPolice } = require("../controllers/assignPolice.controller");
 
 const storage = multer.diskStorage({});
 
@@ -160,7 +161,7 @@ async function uploadVerification(req, res, next) {
   }
 }
 // assign complaint
-// router.put("/assignComplaint", auth,stationAdmin, );
+router.put("/assignComplaint", auth, stationAdmin, assignPolice);
 
 // get
 router.get("/mydetails", auth, me);

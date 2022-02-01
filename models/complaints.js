@@ -57,6 +57,9 @@ const complaintSchema = new Schema({
           assignTo: {
             type: String,
           },
+          assignName: {
+            type: String,
+          },
         },
         { timestamps: true }
       ),
