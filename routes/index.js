@@ -175,7 +175,10 @@ async function verify(req, res, next) {
   const { _id, role } = req.user;
   if (role === 3000) {
     const data = await User.findById(_id);
-    if (data.userDetails?.adhaarCard || data.userDetails?.panCard) {
+    if (
+      data.userDetails &&
+      (data.userDetails?.adhaarCard || data.userDetails?.panCard)
+    ) {
       next();
     } else {
       next(
