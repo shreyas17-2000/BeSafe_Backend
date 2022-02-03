@@ -94,6 +94,7 @@ router.put("/updateStatus", auth, updateStatus);
 router.post(
   "/complaints",
   auth,
+  verify,
   uploads.array("imageProof"),
   uploadComplaintProof,
   postComplaints
@@ -103,6 +104,7 @@ router.post("/sendNoti", auth, sendPostNotifications);
 router.post(
   "/missingPerson",
   auth,
+  verify,
   uploads.array("imageProof"),
   uploadComplaintProof,
   missingPerson
@@ -110,6 +112,7 @@ router.post(
 router.post(
   "/unIdPerson",
   auth,
+  verify,
   uploads.array("imageProof"),
   uploadComplaintProof,
   unIdPerson
@@ -117,6 +120,7 @@ router.post(
 router.post(
   "/mslf",
   auth,
+  verify,
   uploads.array("imageProof"),
   uploadComplaintProof,
   mslf
@@ -166,6 +170,24 @@ async function uploadVerification(req, res, next) {
     next(CustomErrorHandler.serverError());
   }
 }
+
+async function verify(req, res, next) {
+  const { _id, role } = req.user;
+  if (role === 3000) {
+    const data = await User.findById(_id);
+    console.log(data.userDetails);
+    if (data.userDetails?.adhaarCard || data.userDetails?.panCard) {
+      next();
+    } else {
+      next(
+        CustomErrorHandler.wrongCredentials(
+          "Complete your profile before registering complaint"
+        )
+      );
+    }
+  }
+}
+
 // assign complaint
 router.put("/assignReport", auth, stationAdmin, assignReportPolice);
 router.put("/assignMissing", auth, stationAdmin, assignMissing);
