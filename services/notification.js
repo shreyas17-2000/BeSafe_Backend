@@ -15,6 +15,8 @@ function createMessages(body, data, pushTokens) {
     messages.push({
       to: pushToken,
       sound: "default",
+      priority: "high",
+      title: "Complaint Submitted",
       body,
       data,
     });
