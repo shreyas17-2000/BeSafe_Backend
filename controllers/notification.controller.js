@@ -17,14 +17,14 @@ const notificationController = {
       return next(error);
     }
     try {
-      const notificationToken = await User.findOne({
-        notificationToken: req.body.notificationToken,
-      });
-      if (notificationToken) {
-        return next(
-          CustomErrorHandler.alreadyExist("The Token Already Exists")
-        );
-      }
+      // const notificationToken = await User.findOne({
+      //   notificationToken: req.body.notificationToken,
+      // });
+      // if (notificationToken) {
+      //   return next(
+      //     CustomErrorHandler.alreadyExist("The Token Already Exists")
+      //   );
+      // }
       const setNotification = await User.findByIdAndUpdate(_id, {
         notificationToken: req.body.notificationToken,
       });
@@ -68,8 +68,9 @@ const notificationController = {
       // let tickets = await sendMessages(messages);
       // console.log(tickets);
       const { notificationToken } = await User.findById(_id);
+      console.log(notificationToken);
       if (!notificationToken) {
-        next(CustomErrorHandler.serverError);
+        return next(CustomErrorHandler.serverError);
       }
       const userNoti = await sendMessages(
         createMessages(userMessage, { userMessage }, [notificationToken])
@@ -77,6 +78,7 @@ const notificationController = {
 
       res.json({
         success: true,
+        userNoti,
       });
     } catch (error) {
       next(error);
