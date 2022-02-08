@@ -41,6 +41,7 @@ db.once("open", () => console.log("Db Connected"));
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use("/api", router);
 app.use((req, res, next) => {
   req.io = io;
   return next();
@@ -48,17 +49,10 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use("/api", router);
-
 app.use(errorHandler);
 
 const port = PORT || "5000";
 
 server.listen(port, () => console.log(`Server started!`));
 
-io.on("connection", (socket) => {
-  console.log("a user connected");
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
-});
+app.set("socketio", io);

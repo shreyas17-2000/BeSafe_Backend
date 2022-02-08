@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const mslf = require("../models/mslf");
-
 const mslfController = {
   async mslf(req, res, next) {
     const { _id } = req.user;
@@ -45,14 +44,14 @@ const mslfController = {
           }
         );
       }
+      // req.io.emit("statusUpdated", { success: true });
+      return res.json({
+        success: true,
+        addComplaint,
+      });
     } catch (error) {
       console.log(error);
     }
-    req.io.emit("statusUpdated", { success: true });
-    return res.json({
-      success: true,
-      addComplaint,
-    });
   },
   async getmslf(req, res, next) {
     const { _id, role } = req.user;
@@ -100,10 +99,25 @@ const mslfController = {
           ],
         });
       }
-      req.io.emit("getmslf", {
-        success: true,
-        myComplaints,
-      });
+
+      // var io = req.app.get("socketio");
+      // io.on("connection", (socket) => {
+      //   console.log("a user connected");
+      //   socket.on("g", ({ token }) => {
+      //     console.log(token);
+      //     if (token) {
+      //       socket.to(socket.id).emit(token, {
+      //         success: true,
+      //         // myComplaints,
+      //       });
+      //     }
+      //   });
+      //   // socket.token = socket.handshake.headers.token;
+      //   // socket.join(socket.token);
+      //   socket.on("disconnect", () => {
+      //     console.log("user disconnected");
+      //   });
+      // });
       res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
