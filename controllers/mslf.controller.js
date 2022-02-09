@@ -44,7 +44,8 @@ const mslfController = {
           }
         );
       }
-      // req.io.emit("statusUpdated", { success: true });
+      var io = req.app.get("socketio");
+      io.emit("statusUpdated", { success: true });
       return res.json({
         success: true,
         addComplaint,

@@ -52,17 +52,12 @@ const complaintsController = {
         });
       }
       if (!myComplaints) {
-        req.io.emit("getComplaints", {
+        return res.json({
           success: true,
           myComplaints: [],
         });
-      } else {
-        req.io.emit("getComplaints", {
-          success: true,
-          myComplaints,
-        });
       }
-      res.json({ success: true });
+      return res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
     }
@@ -119,10 +114,6 @@ const complaintsController = {
           ],
         });
       }
-      req.io.emit("ComplaintsHistory", {
-        success: true,
-        myComplaints,
-      });
       res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
@@ -172,7 +163,8 @@ const complaintsController = {
     } catch (err) {
       return next(err);
     }
-    req.io.emit("statusUpdated", { success: true });
+    var io = req.app.get("socketio");
+    io.emit("statusUpdated", { success: true });
     return res.json({
       success: true,
       addComplaint,

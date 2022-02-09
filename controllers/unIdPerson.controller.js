@@ -54,7 +54,8 @@ const unIdPersonController = {
     } catch (error) {
       console.log(error);
     }
-    req.io.emit("statusUpdated", { success: true });
+    var io = req.app.get("socketio");
+    io.emit("statusUpdated", { success: true });
     return res.json({
       success: true,
       addComplaint,
@@ -102,11 +103,8 @@ const unIdPersonController = {
           ],
         });
       }
-      req.io.emit("getUnIdPerson", {
-        success: true,
-        myComplaints,
-      });
-      res.json({ success: true });
+
+      res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
     }
@@ -150,11 +148,8 @@ const unIdPersonController = {
           ],
         });
       }
-      req.io.emit("UnIdPersonHistory", {
-        success: true,
-        myComplaints,
-      });
-      res.json({ success: true });
+
+      res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
     }

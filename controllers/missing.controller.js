@@ -51,7 +51,8 @@ const missingController = {
     } catch (error) {
       console.log(error);
     }
-    req.io.emit("statusUpdated", { success: true });
+    var io = req.app.get("socketio");
+    io.emit("statusUpdated", { success: true });
     return res.json({
       success: true,
       addComplaint,
@@ -100,10 +101,6 @@ const missingController = {
           ],
         });
       }
-      req.io.emit("getMissingPerson", {
-        success: true,
-        myComplaints,
-      });
       res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
@@ -146,11 +143,7 @@ const missingController = {
           ],
         });
       }
-      req.io.emit("missingPersonHistory", {
-        success: true,
-        myComplaints,
-      });
-      res.json({ success: true });
+      res.json({ success: true, myComplaints });
     } catch (error) {
       return next(error);
     }
