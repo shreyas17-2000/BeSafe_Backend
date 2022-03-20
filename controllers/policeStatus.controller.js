@@ -21,8 +21,7 @@ const policeStatusController = {
 					status: status,
 				});
 				var io = req.app.get("socketio");
-				io.emit("statusUpdated", { success: true });
-				return res.json(workingHours);
+				return res.json({ success: true });
 			}
 		} catch (error) {
 			next(error);
