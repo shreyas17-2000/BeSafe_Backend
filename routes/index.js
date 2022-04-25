@@ -35,7 +35,12 @@ const {
 	saveExpoToken,
 	sendPostNotifications,
 } = require("../controllers/notification.controller");
-const { updateStatus } = require("../controllers/complaintStatus.controller");
+const {
+	updateReportStatus,
+	updateMissingStatus,
+	updateMslfStatus,
+	updateUnidPersonStatus,
+} = require("../controllers/complaintStatus.controller");
 const User = require("../models/user");
 const {
 	missingPerson,
@@ -87,7 +92,10 @@ router.post("/forgot-password", forgotPassword);
 router.post("/admin", adminlogin);
 router.post("/refresh", refresh);
 router.post("/logout", auth, logout);
-router.put("/updateStatus", auth, updateStatus);
+router.put("/updateReportStatus", auth, updateReportStatus);
+router.put("/updateMissingStatus", auth, updateMissingStatus);
+router.put("/updateMslfStatus", auth, updateMslfStatus);
+router.put("/updateUnidPersonStatus", auth, updateUnidPersonStatus);
 router.post(
 	"/complaints",
 	auth,
