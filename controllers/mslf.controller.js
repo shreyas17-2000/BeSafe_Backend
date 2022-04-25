@@ -56,69 +56,101 @@ const mslfController = {
 	},
 	async getmslf(req, res, next) {
 		const { _id, role } = req.user;
-		let myComplaints;
+		const myComplaints = [];
 		try {
 			if (role === 5000) {
-				myComplaints = await mslf.find({
-					$or: [
-						{
+				const assignedComplaints = await mslf.aggregate([
+					{
+						$match: {
+							"mslf.assignTo": _id,
+						},
+					},
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.assignTo": _id,
+							"mslf.status": { $ne: "Solved" },
+						},
+					},
+				]);
+				if (assignedComplaints.length > 0) {
+					assignedComplaints?.forEach((complaint) => {
+						myComplaints.push(complaint.mslf);
+					});
+				}
+				const personalComplaint = await mslf.aggregate([
+					{
+						$match: {
 							userId: _id,
-							mslf: { $elemMatch: { status: { $ne: "Solved" } } },
 						},
-						{
-							mslf: {
-								$elemMatch: { assignTo: _id, status: { $ne: "Solved" } },
-							},
+					},
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.assignTo": { $ne: _id },
+							"mslf.status": { $ne: "Solved" },
 						},
-					],
-				});
+					},
+				]);
+				if (personalComplaint.length > 0) {
+					personalComplaint.forEach((element) => {
+						myComplaints.push(element.mslf);
+					});
+				}
 			} else if (role === 4000) {
-				myComplaints = await mslf.find({
-					$or: [
-						{ userId: _id },
-						{
-							mslf: {
-								$elemMatch: {
-									stationAddress: req.station,
-									status: { $ne: "Solved" },
-								},
-							},
+				const assignedComplaints = await mslf.aggregate([
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.stationAddress": req.station,
+							"mslf.status": { $ne: "Solved" },
 						},
-					],
-				});
-			} else if (role === 3000) {
-				myComplaints = await mslf.find({
-					$or: [
-						{
+					},
+				]);
+				if (assignedComplaints.length > 0) {
+					assignedComplaints.forEach((complaint) => {
+						myComplaints.push(complaint.mslf);
+					});
+				}
+				const personalComplaint = await mslf.aggregate([
+					{
+						$match: {
 							userId: _id,
-							mslf: {
-								$elemMatch: {
-									status: { $ne: "Solved" },
-								},
-							},
 						},
-					],
-				});
+					},
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.stationAddress": { $ne: req.station },
+							"mslf.status": { $ne: "Solved" },
+						},
+					},
+				]);
+				if (personalComplaint.length > 0) {
+					personalComplaint.forEach((element) => {
+						myComplaints.push(element.mslf);
+					});
+				}
+			} else if (role === 3000) {
+				const personalComplaint = await mslf.aggregate([
+					{
+						$match: {
+							userId: _id,
+						},
+					},
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.status": { $ne: "Solved" },
+						},
+					},
+				]);
+				if (personalComplaint.length > 0) {
+					personalComplaint.forEach((element) => {
+						myComplaints.push(element.mslf);
+					});
+				}
 			}
-
-			// var io = req.app.get("socketio");
-			// io.on("connection", (socket) => {
-			//   console.log("a user connected");
-			//   socket.on("g", ({ token }) => {
-			//     console.log(token);
-			//     if (token) {
-			//       socket.to(socket.id).emit(token, {
-			//         success: true,
-			//         // myComplaints,
-			//       });
-			//     }
-			//   });
-			//   // socket.token = socket.handshake.headers.token;
-			//   // socket.join(socket.token);
-			//   socket.on("disconnect", () => {
-			//     console.log("user disconnected");
-			//   });
-			// });
 			res.json({ success: true, myComplaints });
 		} catch (error) {
 			return next(error);
@@ -129,39 +161,97 @@ const mslfController = {
 		let myComplaints;
 		try {
 			if (role === 5000) {
-				myComplaints = await mslf.find({
-					$or: [
-						{
-							userId: _id,
-							mslf: {
-								$elemMatch: { status: "Solved" },
-							},
-						},
-						{
-							mslf: { $elemMatch: { assignTo: _id, status: "Solved" } },
-						},
-					],
-				});
-			} else if (role === 4000) {
-				myComplaints = await mslf.find(
+				const assignedComplaints = await mslf.aggregate([
 					{
-						mslf: {
-							$elemMatch: { stationAddress: req.station, status: "Solved" },
+						$match: {
+							"mslf.assignTo": _id,
 						},
 					},
-					{ "complaints.$": 1 }
-				);
-			} else if (role === 3000) {
-				myComplaints = await mslf.find({
-					$or: [
-						{
-							userId: _id,
-							mslf: {
-								$elemMatch: { status: "Solved" },
-							},
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.assignTo": _id,
+							"mslf.status": "Solved",
 						},
-					],
-				});
+					},
+				]);
+				if (assignedComplaints.length > 0) {
+					assignedComplaints?.forEach((complaint) => {
+						myComplaints.push(complaint.mslf);
+					});
+				}
+				const personalComplaint = await mslf.aggregate([
+					{
+						$match: {
+							userId: _id,
+						},
+					},
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.stationAddress": { $ne: req.station },
+							"mslf.status": "Solved",
+						},
+					},
+				]);
+				if (personalComplaint.length > 0) {
+					personalComplaint.forEach((element) => {
+						myComplaints.push(element.mslf);
+					});
+				}
+			} else if (role === 4000) {
+				const assignedComplaints = await mslf.aggregate([
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.stationAddress": req.station,
+							"mslf.status": "Solved",
+						},
+					},
+				]);
+				if (assignedComplaints.length > 0) {
+					assignedComplaints.forEach((complaint) => {
+						myComplaints.push(complaint.mslf);
+					});
+				}
+				const personalComplaint = await mslf.aggregate([
+					{
+						$match: {
+							userId: _id,
+						},
+					},
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.stationAddress": { $ne: req.station },
+							"mslf.status": "Solved",
+						},
+					},
+				]);
+				if (personalComplaint.length > 0) {
+					personalComplaint.forEach((element) => {
+						myComplaints.push(element.mslf);
+					});
+				}
+			} else if (role === 3000) {
+				const personalComplaint = await mslf.aggregate([
+					{
+						$match: {
+							userId: _id,
+						},
+					},
+					{ $unwind: "$mslf" },
+					{
+						$match: {
+							"mslf.status": "Solved",
+						},
+					},
+				]);
+				if (personalComplaint.length > 0) {
+					personalComplaint.forEach((element) => {
+						myComplaints.push(element.mslf);
+					});
+				}
 			}
 			res.json({ success: true });
 		} catch (error) {
