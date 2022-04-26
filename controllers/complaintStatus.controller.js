@@ -4,6 +4,7 @@ const missingPerson = require("../models/missingPerson");
 const mslf = require("../models/mslf");
 const unIdPerson = require("../models/unIdPerson");
 const CustomErrorHandler = require("../services/CustomErrorHandler");
+const { mobiApp } = require("./mobiapp.controller");
 
 const ComplaintStatusController = {
 	async updateReportStatus(req, res, next) {
@@ -21,6 +22,28 @@ const ComplaintStatusController = {
 					}
 				);
 				console.log(myComplaints);
+				var io = req.app.get("socketio");
+				io.emit("statusUpdated", { success: true });
+				return res.json(myComplaints);
+			}
+		} catch (error) {
+			next(error);
+		}
+	},
+	async updateMobiAppStatus(req, res, next) {
+		const { role } = req.user;
+		const { status, _id } = req.body;
+		let myComplaints;
+		try {
+			if (role === 5000) {
+				myComplaints = await mobiApp.updateOne(
+					{ "mobiApp._id": _id },
+					{
+						$set: {
+							"mobiApp.$.status": status,
+						},
+					}
+				);
 				var io = req.app.get("socketio");
 				io.emit("statusUpdated", { success: true });
 				return res.json(myComplaints);

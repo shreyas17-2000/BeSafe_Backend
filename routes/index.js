@@ -66,6 +66,7 @@ const {
 const {
 	updatePoliceStatus,
 } = require("../controllers/policeStatus.controller");
+const { mobiApp, getMobiApp } = require("../controllers/mobiapp.controller");
 
 const storage = multer.diskStorage({});
 
@@ -129,6 +130,14 @@ router.post(
 	uploads.array("imageProof"),
 	uploadComplaintProof,
 	mslf
+);
+router.post(
+	"/mobileApp",
+	auth,
+	verify,
+	uploads.array("imageProof"),
+	uploadComplaintProof,
+	mobiApp
 );
 router.post(
 	"/upload-verification",
@@ -212,6 +221,7 @@ router.get("/complaintsHistory", auth, stationAdmin, ComplaintsHistory);
 router.get("/getMissingPerson", auth, stationAdmin, getmissingPerson);
 router.get("/missingPersonHistory", auth, stationAdmin, missingPersonHistory);
 router.get("/getmslf", auth, stationAdmin, getmslf);
+router.get("/getMobiApp", auth, stationAdmin, getMobiApp);
 router.get("/mslfHistory", auth, stationAdmin, mslfHistory);
 router.get("/getUnIdPerson", auth, stationAdmin, getUnIdPerson);
 router.get("/unIdPersonHistory", auth, stationAdmin, UnIdPersonHistory);
