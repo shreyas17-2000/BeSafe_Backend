@@ -6,11 +6,11 @@ const mobiAppController = {
 		const { _id } = req.user;
 		const data = JSON.parse(req.body.data);
 		const mslfSchema = Joi.object({
-			incidenceDesc: "",
-			locationName: "",
-			locationAddress: "",
-			nearestPoliceStation: "",
-			nearestPoliceStationAddress: "",
+			incidenceDesc: Joi.string().required(),
+			locationName: Joi.string().required(),
+			locationAddress: Joi.string().required(),
+			nearestPoliceStation: Joi.string().required(),
+			nearestPoliceStationAddress: Joi.string().required(),
 		});
 		const { error } = mslfSchema.validate(data);
 		if (error) {
