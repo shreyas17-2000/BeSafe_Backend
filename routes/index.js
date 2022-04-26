@@ -40,6 +40,7 @@ const {
 	updateMissingStatus,
 	updateMslfStatus,
 	updateUnidPersonStatus,
+	updateMobiAppStatus,
 } = require("../controllers/complaintStatus.controller");
 const User = require("../models/user");
 const {
@@ -62,6 +63,7 @@ const {
 	assignMslf,
 	assignMissing,
 	assignUnIdPerson,
+	assignMobiApp,
 } = require("../controllers/assignPolice.controller");
 const {
 	updatePoliceStatus,
@@ -97,6 +99,7 @@ router.put("/updateReportStatus", auth, updateReportStatus);
 router.put("/updateMissingStatus", auth, updateMissingStatus);
 router.put("/updateMslfStatus", auth, updateMslfStatus);
 router.put("/updateUnidPersonStatus", auth, updateUnidPersonStatus);
+router.put("/updateMobiAppStatus", auth, updateMobiAppStatus);
 router.post(
 	"/complaints",
 	auth,
@@ -209,6 +212,7 @@ async function verify(req, res, next) {
 // assign complaint
 router.put("/assignReport", auth, stationAdmin, assignReportPolice);
 router.put("/assignMissing", auth, stationAdmin, assignMissing);
+router.put("/assignMobiApp", auth, stationAdmin, assignMobiApp);
 router.put("/assignMSLF", auth, stationAdmin, assignMslf);
 router.put("/assignUnIdPerson", auth, stationAdmin, assignUnIdPerson);
 router.put("/updatePoliceStatus", auth, PoliceMan, updatePoliceStatus);
